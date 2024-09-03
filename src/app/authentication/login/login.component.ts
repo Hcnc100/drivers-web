@@ -4,6 +4,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { constants } from '../../constants/constants';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../services/auth.service';
+import { LoginDTO } from '../model/LoginDTO';
 
 @Component({
   selector: 'app-login',
@@ -25,9 +27,33 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required, Validators.minLength(6)])
   });
 
-  constructor() { }
+  constructor(
+    private authService: AuthService
+  ) { }
 
   login() {
-    throw new Error('Method not implemented.');
+    if (this.formLogin.valid) {
+      const loginDTO = this.generateLoginForm();
+      this.authService.login(loginDTO).subscribe({
+        next: (response: any) => {
+          console.log(response);
+        },
+        error: (error: any) => {
+          console.error(error);
+        }
+      });
+    } else {
+      console.log('Formulário inválido');
+    }
+  }
+
+  private generateLoginForm(): LoginDTO {
+    const email = this.formLogin?.get('email')?.value!;
+    const password = this.formLogin.get('password')?.value!;
+
+    return {
+      email: email,
+      password: password
+    };
   }
 }
