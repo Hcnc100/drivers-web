@@ -12,6 +12,7 @@ import { finalize, merge, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogService } from '../../shared/simple-dialog/services/dialog.service';
 import { ErrorForm } from '../../shared/model/ErrorForm';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -58,7 +59,8 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private router: Router
   ) {
 
     this.createListenerByFormControl(this.formLogin.controls.email, () => {
@@ -100,10 +102,8 @@ export class LoginComponent {
     this.formLogin.disable();
     this.authService.login(loginDTO)
       .subscribe({
-        next: (response: any) => {
-          console.log(response);
-        },
-        error: this.validateErrors.bind(this),
+        next: () => this.router.navigate(['/drivers']),
+        error: (error) => this.validateErrors(error)
       })
       .add(() => {
         this._isLoading.set(false);
