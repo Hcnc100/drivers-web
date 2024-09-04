@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { finalize, merge, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DialogService } from '../../shared/simple-dialog/services/dialog.service';
 
 @Component({
   selector: 'app-login',
@@ -55,7 +56,8 @@ export class LoginComponent {
   }
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private dialogService: DialogService
   ) {
 
     this.createListenerByFormControl(this.formLogin.controls.email, () => {
@@ -99,9 +101,7 @@ export class LoginComponent {
         next: (response: any) => {
           console.log(response);
         },
-        error: (error: any) => {
-          console.error(error);
-        },
+        error: this.validateErrors.bind(this),
       })
       .add(() => {
         this._isLoading.set(false);
@@ -117,6 +117,33 @@ export class LoginComponent {
       email: email,
       password: password
     };
+  }
+
+  private validateErrors(error: any) {
+    console.log('error', error);
+    if (error.status === 404) {
+      this.dialogService.openDialog({
+        title: 'Error',
+        message: 'User not found',
+        confirmButton: 'Ok'
+      });
+    }
+
+    if (error.status === 401) {
+      this.dialogService.openDialog({
+        title: 'Error',
+        message: 'Invalid credentials',
+        confirmButton: 'Ok'
+      });
+    }
+
+    if (error.status === 500) {
+      this.dialogService.openDialog({
+        title: 'Error',
+        message: 'Internal server error',
+        confirmButton: 'Ok'
+      });
+    }
   }
 
   togglePassword(event: MouseEvent) {
