@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { finalize, merge, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogService } from '../../shared/simple-dialog/services/dialog.service';
+import { ErrorForm } from '../../shared/model/ErrorForm';
 
 @Component({
   selector: 'app-login',
@@ -61,13 +62,13 @@ export class LoginComponent {
   ) {
 
     this.createListenerByFormControl(this.formLogin.controls.email, () => {
-      this.validateControl(this.formLogin.controls.email, this.errors.email, this._errorEmail);
+      this.validateFormControl(this.formLogin.controls.email, this.errors.email, this._errorEmail);
     });
     this.createListenerByFormControl(this.formLogin.controls.password, () => {
-      this.validateControl(this.formLogin.controls.password, this.errors.password, this._errorPassword);
+      this.validateFormControl(this.formLogin.controls.password, this.errors.password, this._errorPassword);
     });
   }
-  private validateControl(control: FormControl, errors: { type: string, message: string }[], signalError: WritableSignal<string>) {
+  private validateFormControl(control: FormControl, errors: ErrorForm[], signalError: WritableSignal<string>) {
     if (control.invalid) {
       const error = errors.find(error => control.hasError(error.type));
       if (error) {
@@ -85,11 +86,12 @@ export class LoginComponent {
   }
 
   login() {
+    this.formLogin.markAllAsTouched();
     if (this.formLogin.valid) {
       const loginDTO = this.generateLoginForm();
       this.loginWithCredential(loginDTO)
     } else {
-      console.log('Formulário inválido');
+      this.dialogService.showErrorMessage('Verifique sus datos');
     }
   }
 
@@ -122,27 +124,15 @@ export class LoginComponent {
   private validateErrors(error: any) {
     console.log('error', error);
     if (error.status === 404) {
-      this.dialogService.openDialog({
-        title: 'Error',
-        message: 'User not found',
-        confirmButton: 'Ok'
-      });
+      this.dialogService.showErrorMessage('Usuario no encontrado');
     }
 
     if (error.status === 401) {
-      this.dialogService.openDialog({
-        title: 'Error',
-        message: 'Invalid credentials',
-        confirmButton: 'Ok'
-      });
+      this.dialogService.showErrorMessage('Verifique sus credenciales');
     }
 
     if (error.status === 500) {
-      this.dialogService.openDialog({
-        title: 'Error',
-        message: 'Internal server error',
-        confirmButton: 'Ok'
-      });
+      this.dialogService.showErrorMessage('Error en el servidor');
     }
   }
 

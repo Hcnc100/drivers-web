@@ -18,10 +18,18 @@ export class DialogService {
     this.dialodRef = this.dialog.open(DialogComponent, {
       data: simpleDialogData,
       width: '400px',
-      height: '200px'
+      height: '300px'
     });
 
     return this.dialodRef
+  }
+
+  showErrorMessage(message: string) {
+    return this.openDialog({
+      title: 'Error',
+      message: message,
+      confirmButton: 'Aceptar'
+    });
   }
 
   closeDialog() {

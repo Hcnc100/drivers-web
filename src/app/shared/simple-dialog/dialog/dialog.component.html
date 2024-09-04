@@ -1,6 +1,9 @@
-<h2 mat-dialog-title class="centered-title">{{simpleDialogData().title}}</h2>
+<h2 mat-dialog-title class="centered-text">{{simpleDialogData().title}}</h2>
 <mat-dialog-content>
-    <p>{{simpleDialogData().message}}</p>
+  <div class="centered-column-content">
+  <img src="assets/svg/error.svg" alt="Error" class="svg-icon-dialog">
+  <p>{{simpleDialogData().message}}</p>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions [align]="'center'">
   <button mat-flat-button mat-dialog-close cdkFocusInitial>{{simpleDialogData().confirmButton}}</button>
