@@ -1,16 +1,40 @@
 <div class="container-center">
-    <form [formGroup]="formLogin" (ngSubmit)="login()" class="form-card">
+    <form [formGroup]="formLogin" class="form-card">
         <h1>Login</h1>
-        <mat-form-field class="input-form">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" placeholder="example@mail.com" required maxlength="50" type="email">
-        </mat-form-field>
+        <div class="container-field">
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" placeholder="example@mail.com" required maxlength="50"
+                    type="email">
+                    @if (this.formLogin.controls.email.invalid){
+                        <mat-error>{{errorEmail()}}</mat-error>
+                        }
+            </mat-form-field>
+           
+        </div>
 
-        <mat-form-field class="input-form">
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" placeholder="********" required maxlength="50" type="password">
-        </mat-form-field>
+        <div class="container-field">
+            <mat-form-field >
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" placeholder="********" required maxlength="50" matInput
+                    [type]="isPasswordVisible() ? 'password' : 'text'"
+                    >
+                <button mat-icon-button matSuffix (click)="togglePassword($event)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="isPasswordVisible()">
+                    <mat-icon>{{isPasswordVisible() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                @if (this.formLogin.controls.password.invalid){
+                    <mat-error>{{errorPassword()}}</mat-error>
+                    }
+            </mat-form-field>
+        </div>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="!formLogin.valid">Login</button>
+        @if (isLoading()){
+        <mat-spinner diameter="35"></mat-spinner>
+        }@else{
+        <button mat-raised-button color="primary" (click)="login()">Login</button>
+        }
+
+
     </form>
 </div>
