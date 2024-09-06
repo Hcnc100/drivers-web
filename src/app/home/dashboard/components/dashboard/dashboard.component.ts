@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NavDestination, navDestinations } from '../../model/NavDestinations';
 import { ToolbarComponent } from "../toolbar/toolbar.component";
 import { ItemNavComponent } from "../item-nav/item-nav.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +13,8 @@ import { ItemNavComponent } from "../item-nav/item-nav.component";
     MatSidenavModule,
     ToolbarComponent,
     MatIconModule,
-    ItemNavComponent
+    ItemNavComponent,
+    RouterOutlet,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "Proyect",
         "LoginComponent",
-        "Dashboard"
+        "Dashboard",
+        "Navigation"
     ]
 }
