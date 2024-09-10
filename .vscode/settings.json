@@ -3,6 +3,7 @@
         "Proyect",
         "LoginComponent",
         "Dashboard",
-        "Navigation"
+        "Navigation",
+        "Pagination"
     ]
 }
