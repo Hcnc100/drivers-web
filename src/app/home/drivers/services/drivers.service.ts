@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IPaginationServices } from '../../../shared/pagination/interfaces/IPaginationServices';
 import { Observable } from 'rxjs';
-import { PaginatedResult } from '../../../shared/pagination/model/pagination.interface';
+import { PaginatedResult } from '../../../shared/pagination/model/pagination.result';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { PaginationRequest } from '../../../shared/pagination/model/pagination.request';
