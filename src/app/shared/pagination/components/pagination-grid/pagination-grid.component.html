@@ -1,10 +1,15 @@
-<table mat-table [dataSource]="data" matSort matSortActive="id" matSortDisableClear matSortDirection="asc"
+@if (this.isLoading()) {
+    <div class="container-spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+}@else{
+    <table mat-table [dataSource]="data" matSort matSortActive="id" matSortDisableClear matSortDirection="asc"
     (matSortChange)="sortData($event)">
 >
     @for (column of this.tableColumns; track $index) {
     <ng-container matColumnDef="{{column.displayName}}">
         @if (column.isSortable) {
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="{{column.key}}"> 
             {{column.displayName}} </th>
         }@else {
             <th mat-header-cell *matHeaderCellDef> {{column.displayName}} </th>
@@ -17,6 +22,10 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
 </table>
 
-<mat-paginator [length]="totalItem()" [pageSize]="pageSize()" [pageSizeOptions]="itemsPerPageOptions"
+<mat-paginator 
+
+[length]="totalItem()" [pageSize]="pageSize()" [pageSizeOptions]="itemsPerPageOptions"
     [pageIndex]="currentPage()" (page)="pageEvent($event)"
-    [attr.aria-label]="description"></mat-paginator>
+    [attr.aria-label]="description"/>
+}
+

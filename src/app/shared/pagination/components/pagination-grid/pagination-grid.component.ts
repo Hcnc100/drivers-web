@@ -1,13 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, computed, Input, model, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, Input, model, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { IPaginationServices } from '../../interfaces/IPaginationServices';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
-import { catchError, map, merge, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, merge, Subscription, switchMap, tap } from 'rxjs';
 import { of as observableOf } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { ColumnName } from '../../model/column.name';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { PaginatedResult } from '../../model/pagination.result';
+import { PaginationRequest } from '../../model/pagination.request';
 
 @Component({
   selector: 'app-pagination-grid',
@@ -16,12 +19,13 @@ import { ColumnName } from '../../model/column.name';
     CommonModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule, MatTableModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
   ],
   templateUrl: './pagination-grid.component.html',
   styleUrl: './pagination-grid.component.css'
 })
-export class PaginationGridComponent implements OnInit {
+export class PaginationGridComponent implements OnInit, OnDestroy {
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -36,13 +40,19 @@ export class PaginationGridComponent implements OnInit {
 
   @Input({ required: true }) description!: string;
 
+  private subscription?: Subscription;
+
+  search = model('');
+  private search$ = toObservable(this.search);
+
+  private isFirstLoading = signal(true);
 
   displayedColumns = computed(() => {
     return this.tableColumns.map(column => column.displayName);
   });
 
 
-  private _isLoading = signal(false);
+  private _isLoading = signal(true);
   isLoading = this._isLoading.asReadonly();
 
   private _totalItems = signal(0);
@@ -60,11 +70,22 @@ export class PaginationGridComponent implements OnInit {
 
   data: any[] = [];
 
-  constructor() { }
+  constructor() {
+
+  }
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
 
   ngOnInit(): void {
-    this.loadData();
-
+    this.subscription = this.search$.pipe(
+      debounceTime(1500),
+      distinctUntilChanged(),
+      tap(() => {
+        this.paginator?.firstPage();
+        this.loadData();
+      })
+    ).subscribe();
   }
 
   pageEvent($event: PageEvent) {
@@ -79,25 +100,49 @@ export class PaginationGridComponent implements OnInit {
   }
 
   private loadData(): void {
-    this._isLoading.set(true);
-    this.paginationServices.getAllPaginated({
+    if (this.isFirstLoading()) {
+      this._isLoading.set(true);
+    }
+    this.paginationServices.getAllPaginated(this.calculatePageInfo()).pipe(
+      catchError(() => observableOf(null)),
+      map(data => {
+        if (this.isFirstLoading()) {
+          this.isFirstLoading.set(false);
+        }
+        if (data === null) {
+          this.setPaginatorError();
+          return [];
+        }
+        this.calculateNewPageInfo(data);
+        return data.result;
+      })
+    ).subscribe(data => {
+      this.data = data
+      this._isLoading.set(false);
+    });
+  }
+
+  private calculatePageInfo(): PaginationRequest {
+    return {
       page: this.paginator?.pageIndex + 1 || 1,
       limit: this.paginator?.pageSize || 10,
       sort: this.sort?.active || '',
-      order: this.sort?.direction as SortDirection || 'asc'
-    }).pipe(
-      catchError(() => observableOf(null)),
-      map(data => {
+      order: this.sort?.direction as SortDirection || 'asc',
+      search: this.search()
+    };
+  }
 
-        this._isLoading.set(false);
+  private setPaginatorError(): void {
+    this._totalItems.set(0);
+    this._pageSize.set(0);
+    this._currentPage.set(0);
+    this._totalPages.set(0);
+  }
 
-        if (data === null) {
-          return [];
-        }
-
-        this._totalItems.set(data.pagination.totalItems);
-        return data.result;
-      })
-    ).subscribe(data => { this.data = data });
+  private calculateNewPageInfo(data: PaginatedResult<unknown>): void {
+    this._totalItems.set(data.pagination.totalItems);
+    this._pageSize.set(data.pagination.pageSize);
+    this._currentPage.set(data.pagination.currentPage - 1);
+    this._totalPages.set(data.pagination.totalPages);
   }
 }
