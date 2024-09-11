@@ -1,8 +1,14 @@
 <form>
-    <mat-form-field>
-      <mat-label>Búsqueda</mat-label>
-      <span matTextPrefix><mat-icon>search</mat-icon></span>
-      <input type="text" matInput placeholder="Buscar..." [(ngModel)]="search"[ngModelOptions]="{standalone: true}">
-      <mat-icon matSuffix>clear</mat-icon>
+    <mat-form-field class="search-form">
+        <mat-label>Búsqueda</mat-label>
+        <span matTextPrefix><mat-icon>search</mat-icon></span>
+        <input type="text" matInput placeholder="Buscar..." [(ngModel)]="search" [ngModelOptions]="{standalone: true}">
+        @if(search()){
+        <button mat-icon-button matSuffix (click)="clearSearch()">
+            <mat-icon>close</mat-icon>
+        </button>
+        }
+
     </mat-form-field>
-  </form>
+
+</form>
