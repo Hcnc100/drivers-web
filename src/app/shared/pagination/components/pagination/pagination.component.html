@@ -1,11 +1,13 @@
-
 <div class="container-pagination-search">
   <div class="container-search">
+    @if (!isLoading()) {
     <app-search-grid [(search)]="search" />
+    }
   </div>
   <div class="container-pagination">
     <app-pagination-grid [paginationServices]="paginationServices" [tableColumns]="tableColumns"
-      [description]="'Lista de Conductores registrados'" [(search)]="search" />
+      [description]="'Lista de Conductores registrados'" [(search)]="search" [actions]="actions"
+      [(isLoading)]="isLoading" />
 
   </div>
 </div>

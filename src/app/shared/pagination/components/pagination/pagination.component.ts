@@ -3,6 +3,7 @@ import { IPaginationServices } from '../../interfaces/IPaginationServices';
 import { ColumnName } from '../../model/column.name';
 import { PaginationGridComponent } from "../pagination-grid/pagination-grid.component";
 import { SearchGridComponent } from "../search-grid/search-grid.component";
+import { PaginationActions } from '../../model/pagination.actions';
 
 
 @Component({
@@ -31,7 +32,10 @@ export class PaginationComponent {
 
   @Input({ required: true }) description!: string;
 
+  @Input({ required: true }) actions: PaginationActions[] = [];
+
   search = signal('');
+  isLoading = signal(true);
 
   constructor() {
 

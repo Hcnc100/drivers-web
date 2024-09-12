@@ -5,6 +5,7 @@ import { PaginationRequest } from '../../shared/pagination/model/pagination.requ
 import { PaginationGridComponent } from "../../shared/pagination/components/pagination-grid/pagination-grid.component";
 import { ColumnName } from '../../shared/pagination/model/column.name';
 import { PaginationComponent } from "../../shared/pagination/components/pagination/pagination.component";
+import { PaginationActions } from '../../shared/pagination/model/pagination.actions';
 
 @Component({
   selector: 'app-drivers',
@@ -22,6 +23,33 @@ export class DriversComponent {
     { displayName: 'Correo', key: 'email', isSortable: true },
     { displayName: 'Teléfono', key: 'phone', isSortable: false },
 
+  ];
+
+  actions: PaginationActions[] = [
+    {
+      name: 'Editar',
+      icon: 'edit',
+      description: 'Editar conductor',
+      action: (data: any) => {
+        console.log('Editar', data);
+      }
+    },
+    {
+      name: 'Eliminar',
+      icon: 'delete',
+      description: 'Eliminar conductor',
+      action: (data: any) => {
+        console.log('Eliminar', data);
+      }
+    },
+    {
+      name: 'Ver',
+      icon: 'visibility',
+      description: 'Ver conductor',
+      action: (data: any) => {
+        console.log('Ver', data);
+      }
+    }
   ];
 
   constructor(

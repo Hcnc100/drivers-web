@@ -1,9 +1,3 @@
-.container-pagination {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-}
-
 .container-pagination-search {
     display: flex;
     flex-direction: column;
@@ -13,3 +7,44 @@
     height: 100%;
 }
 
+
+.container-pagination {
+    width: 85%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.container-search {
+    width: 85%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+@media (max-width: 1600px) {
+    .container-pagination-search {
+        padding: 40px 20px;
+    }
+
+    .container-pagination {
+        width: 90%;
+    }
+
+    .container-search {
+        width: 90%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .container-pagination-search {
+        padding: 40px 15px;
+    }
+
+    .container-pagination {
+        width: 100%;
+    }
+    .container-search {
+        width: 100%;
+    }
+}

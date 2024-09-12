@@ -12,3 +12,10 @@
     align-items: center;
     height: 100%;
 }
+
+.container-actions{
+    display: flex;
+    flex-direction: row;
+    grid-gap: 10px;
+    justify-content: left;
+}

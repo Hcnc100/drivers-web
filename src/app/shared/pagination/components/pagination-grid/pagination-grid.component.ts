@@ -11,6 +11,9 @@ import { ColumnName } from '../../model/column.name';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { PaginatedResult } from '../../model/pagination.result';
 import { PaginationRequest } from '../../model/pagination.request';
+import { PaginationActions } from '../../model/pagination.actions';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-pagination-grid',
@@ -21,6 +24,8 @@ import { PaginationRequest } from '../../model/pagination.request';
     MatSortModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './pagination-grid.component.html',
   styleUrl: './pagination-grid.component.css'
@@ -36,9 +41,11 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) tableColumns!: ColumnName[];
 
-  @Input() itemsPerPageOptions = [5, 10, 25, 100];
+  @Input() itemsPerPageOptions = [10, 25, 100];
 
   @Input({ required: true }) description!: string;
+
+  @Input({ required: true }) actions: PaginationActions[] = [];
 
   private subscription?: Subscription;
 
@@ -48,12 +55,15 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
   private isFirstLoading = signal(true);
 
   displayedColumns = computed(() => {
-    return this.tableColumns.map(column => column.displayName);
+    const list = this.tableColumns.map(column => column.displayName);
+    if (this.actions.length > 0) {
+      list.push('actions');
+    }
+    return list;
   });
 
 
-  private _isLoading = signal(true);
-  isLoading = this._isLoading.asReadonly();
+  isLoading = model(false);
 
   private _totalItems = signal(0);
   totalItem = this._totalItems.asReadonly();
@@ -64,7 +74,7 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
   private _currentPage = signal(0);
   currentPage = this._currentPage.asReadonly();
 
-  private _pageSize = signal(10);
+  private _pageSize = signal(this.itemsPerPageOptions[0]);
   pageSize = this._pageSize.asReadonly();
 
 
@@ -101,7 +111,7 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
 
   private loadData(): void {
     if (this.isFirstLoading()) {
-      this._isLoading.set(true);
+      this.isLoading.set(true);
     }
     this.paginationServices.getAllPaginated(this.calculatePageInfo()).pipe(
       catchError(() => observableOf(null)),
@@ -118,7 +128,7 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
       })
     ).subscribe(data => {
       this.data = data
-      this._isLoading.set(false);
+      this.isLoading.set(false);
     });
   }
 
