@@ -16,7 +16,7 @@ import { PaginationActions } from '../../shared/pagination/model/pagination.acti
 })
 export class DriversComponent {
 
-  tableColumns: ColumnName[] = [
+  readonly driverColumns: ColumnName[] = [
     { displayName: 'Id', key: 'id', isSortable: true },
     { displayName: 'Nombre', key: 'name', isSortable: true },
     { displayName: 'Apellido', key: 'lastName', isSortable: true },
@@ -25,7 +25,7 @@ export class DriversComponent {
 
   ];
 
-  actions: PaginationActions[] = [
+  readonly actions: PaginationActions[] = [
     {
       name: 'Editar',
       icon: 'edit',

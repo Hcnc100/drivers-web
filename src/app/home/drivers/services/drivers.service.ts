@@ -5,13 +5,14 @@ import { PaginatedResult } from '../../../shared/pagination/model/pagination.res
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { PaginationRequest } from '../../../shared/pagination/model/pagination.request';
+import { generatePaginationQuery } from '../../../utils/generate-pagination-query';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DriversService implements IPaginationServices {
 
-  controller = environment.apiUrl + environment.apiVersion + '/drivers';
+  private readonly controller = environment.apiUrl + environment.apiVersion + '/drivers';
 
   constructor(
     private http: HttpClient
@@ -19,28 +20,9 @@ export class DriversService implements IPaginationServices {
   getAllPaginated<Driver>(
     paginationRequest: PaginationRequest
   ): Observable<PaginatedResult<Driver>> {
-    console.log('paginationRequest', paginationRequest);
-    const query = this.createQuery(paginationRequest);
+    const query = generatePaginationQuery(paginationRequest);
     return this.http.get<PaginatedResult<Driver>>(`${this.controller}?${query}`);
   }
 
-  private createQuery(paginationRequest: PaginationRequest): string {
-    let query = '';
-    if (paginationRequest.page) {
-      query += `page=${paginationRequest.page}`;
-    }
-    if (paginationRequest.limit) {
-      query += `&limit=${paginationRequest.limit}`;
-    }
-    if (paginationRequest.search) {
-      query += `&search=${paginationRequest.search}`;
-    }
-    if (paginationRequest.sort) {
-      query += `&sort=${paginationRequest.sort}`;
-    }
-    if (paginationRequest.order) {
-      query += `&order=${paginationRequest.order}`;
-    }
-    return query;
-  }
+
 }

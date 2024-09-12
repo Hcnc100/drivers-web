@@ -102,10 +102,7 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-
-
   sortData($event: any) {
-    console.log($event);
     this.loadData();
   }
 
