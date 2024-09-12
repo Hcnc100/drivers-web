@@ -5,6 +5,7 @@
         "Dashboard",
         "Navigation",
         "Pagination",
-        "VehicleComponent"
+        "VehicleComponent",
+        "Authentication"
     ]
 }

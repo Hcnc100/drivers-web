@@ -5,7 +5,7 @@ import { TokenService } from '../services/token.service';
 export const guardGuard: CanActivateFn = (route, state) => {
   const tokenServices = inject(TokenService);
   const routerService = inject(Router);
-  if (tokenServices.getToken()) {
+  if (tokenServices.token) {
     return true;
   } else {
     routerService.navigate(['/login']);

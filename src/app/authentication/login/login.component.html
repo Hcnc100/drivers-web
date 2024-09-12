@@ -1,5 +1,5 @@
 <div class="container-center">
-    <form [formGroup]="formLogin" class="form-card">
+    <form [formGroup]="formLogin" class="form-card" (ngSubmit)="login()">
         <h1>Login</h1>
         <div class="container-field">
             <mat-form-field>
@@ -32,7 +32,7 @@
         @if (isLoading()){
         <mat-spinner diameter="35"></mat-spinner>
         }@else{
-        <button mat-raised-button color="primary" (click)="login()">Login</button>
+        <button mat-raised-button color="primary" type="submit">Login</button>
         }
 
 

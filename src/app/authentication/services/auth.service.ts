@@ -10,14 +10,32 @@ import { LoginResponse } from '../model/LoginResponse';
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly controller = environment.apiUrl + environment.apiVersion + '/auth';
   constructor(
     private http: HttpClient,
     private tokenService: TokenService
   ) { }
   login(LoginDTO: LoginDTO) {
-    return this.http.post<LoginResponse>(environment.apiUrl + '/auth/login', LoginDTO).pipe(
+    return this.http.post<LoginResponse>(`${this.controller}/login`, LoginDTO).pipe(
       tap((response: LoginResponse) => {
-        this.tokenService.setToken(response.token);
+        const tokenData = {
+          token: response.token,
+          refreshToken: response.refreshToken
+        };
+        this.tokenService.tokenData = tokenData;
+      })
+    );
+  }
+
+  refreshToken() {
+    const refreshToken = this.tokenService.refreshToken;
+    return this.http.post<LoginResponse>(`${this.controller}/refresh`, { refreshToken }).pipe(
+      tap((response: LoginResponse) => {
+        const tokenData = {
+          token: response.token,
+          refreshToken: response.refreshToken
+        };
+        this.tokenService.tokenData = tokenData;
       })
     );
   }
