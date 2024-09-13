@@ -11,7 +11,7 @@ import { ColumnName } from '../../model/column.name';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { PaginatedResult } from '../../model/pagination.result';
 import { PaginationRequest } from '../../model/pagination.request';
-import { PaginationActions } from '../../model/pagination.actions';
+import { GeneralActions, PaginationActions } from '../../model/pagination.actions';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 
@@ -45,7 +45,7 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) description!: string;
 
-  @Input({ required: true }) actions: PaginationActions[] = [];
+  @Input() paginationActions?: PaginationActions[];
 
 
   search = input.required<string>();
@@ -59,7 +59,7 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
 
   displayedColumns = computed(() => {
     const list = this.tableColumns.map(column => column.displayName);
-    if (this.actions.length > 0) {
+    if (this.paginationActions && this.paginationActions.length > 0) {
       list.push('actions');
     }
     return list;

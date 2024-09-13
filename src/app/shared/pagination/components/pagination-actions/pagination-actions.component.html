@@ -1,0 +1,10 @@
+@if (this.generalActions && this.generalActions.length > 0) {
+    <div class="container-actions">
+      @for (action of this.generalActions; track $index) {
+      <button mat-raised-button (click)="action.action()" [attr.aria-label]="action.description">
+        <mat-icon>{{action.icon}}</mat-icon>
+        {{action.description}}
+      </button>
+      }
+    </div>
+    }
