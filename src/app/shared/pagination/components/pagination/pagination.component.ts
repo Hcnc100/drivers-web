@@ -1,4 +1,4 @@
-import { Component, effect, Input, signal } from '@angular/core';
+import { Component, input, Input, signal } from '@angular/core';
 import { IPaginationServices } from '../../interfaces/IPaginationServices';
 import { ColumnName } from '../../model/column.name';
 import { PaginationGridComponent } from "../pagination-grid/pagination-grid.component";
@@ -17,12 +17,8 @@ import { PaginationActions } from '../../model/pagination.actions';
   styleUrl: './pagination.component.css'
 })
 export class PaginationComponent {
-  clearFilter($event: MouseEvent) {
-    throw new Error('Method not implemented.');
-  }
-  applyFilter(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
+
+
 
   @Input({ required: true }) paginationServices!: IPaginationServices;
 
@@ -34,7 +30,8 @@ export class PaginationComponent {
 
   @Input({ required: true }) actions: PaginationActions[] = [];
 
-  search = signal('');
+
+  search = "";
   isLoading = signal(true);
 
   constructor() {

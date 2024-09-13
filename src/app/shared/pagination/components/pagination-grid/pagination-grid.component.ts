@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, computed, effect, Input, model, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, input, Input, model, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { IPaginationServices } from '../../interfaces/IPaginationServices';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
@@ -47,12 +47,15 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) actions: PaginationActions[] = [];
 
-  private subscription?: Subscription;
 
-  search = model('');
-  private search$ = toObservable(this.search);
+  search = input.required<string>();
+  isLoading = model(false);
+
 
   private isFirstLoading = signal(true);
+
+  private search$ = toObservable(this.search);
+  private subscription?: Subscription;
 
   displayedColumns = computed(() => {
     const list = this.tableColumns.map(column => column.displayName);
@@ -62,8 +65,6 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
     return list;
   });
 
-
-  isLoading = model(false);
 
   private _totalItems = signal(0);
   totalItem = this._totalItems.asReadonly();
@@ -80,22 +81,23 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
 
   data: any[] = [];
 
-  constructor() {
 
-  }
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.subscription = this.search$.pipe(
-      debounceTime(1500),
-      distinctUntilChanged(),
-      tap(() => {
-        this.paginator?.firstPage();
-        this.loadData();
-      })
-    ).subscribe();
+
+    this.subscription =
+      merge(this.search$, this.paginationServices.notifyChangeSignal.asObservable())
+        .pipe(
+          debounceTime(1500),
+          distinctUntilChanged(),
+          tap(() => {
+            this.paginator?.firstPage();
+            this.loadData();
+          })
+        ).subscribe();
   }
 
   pageEvent($event: PageEvent) {

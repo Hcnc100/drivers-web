@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { VehiclesService } from './services/services/vehicles.service';
 import { ColumnName } from '../../shared/pagination/model/column.name';
 import { PaginationActions } from '../../shared/pagination/model/pagination.actions';
@@ -48,6 +48,7 @@ export class VehiclesComponent {
       }
     }
   ];
+
 
   constructor(
     public vehiclesService: VehiclesService,
