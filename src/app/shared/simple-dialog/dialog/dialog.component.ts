@@ -16,7 +16,11 @@ import { MatButtonModule } from '@angular/material/button';
 export class DialogComponent {
 
   readonly dialogRef = inject(MatDialogRef<DialogComponent>);
-  readonly data = inject<SimpleDialogData>(MAT_DIALOG_DATA);
-  readonly simpleDialogData = model(this.data);
+  private readonly data = inject<SimpleDialogData>(MAT_DIALOG_DATA);
+
+
+  readonly title = this.data.title;
+  readonly message = this.data.message;
+  readonly confirmButtonText = this.data.confirmButton;
 
 }
