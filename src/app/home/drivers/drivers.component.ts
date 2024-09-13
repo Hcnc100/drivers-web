@@ -30,7 +30,7 @@ export class DriversComponent {
 
   ];
 
-  readonly actions: PaginationActions[] = [
+  readonly paginationActions: PaginationActions[] = [
     {
       name: 'Editar',
       icon: 'edit',
@@ -50,6 +50,17 @@ export class DriversComponent {
       action: (data: any) => this.actionDriver(DialogAction.OBSERVE, data)
     }
   ];
+
+
+  readonly generalActions = [
+    {
+      name: 'Agregar',
+      icon: 'add',
+      description: 'Agregar conductor',
+      action: () => this.actionDriver(DialogAction.CREATE)
+    }
+  ];
+
   constructor(
     public driversService: DriversService,
   ) { }

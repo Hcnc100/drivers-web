@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { VehiclesService } from './services/services/vehicles.service';
 import { ColumnName } from '../../shared/pagination/model/column.name';
-import { PaginationActions } from '../../shared/pagination/model/pagination.actions';
+import { GeneralActions, PaginationActions } from '../../shared/pagination/model/pagination.actions';
 import { PaginationComponent } from "../../shared/pagination/components/pagination/pagination.component";
 
 @Component({
@@ -22,7 +22,7 @@ export class VehiclesComponent {
 
   ];
 
-  readonly actions: PaginationActions[] = [
+  readonly paginationActions: PaginationActions[] = [
     {
       name: 'Editar',
       icon: 'edit',
@@ -45,6 +45,18 @@ export class VehiclesComponent {
       description: 'Ver vehículo',
       action: (data: any) => {
         console.log('Ver', data);
+      }
+    }
+  ];
+
+
+  readonly generalActions: GeneralActions[] = [
+    {
+      name: 'Agregar',
+      icon: 'add',
+      description: 'Agregar vehículo',
+      action: () => {
+        console.log('Agregar');
       }
     }
   ];
