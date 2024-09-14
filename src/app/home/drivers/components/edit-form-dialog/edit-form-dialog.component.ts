@@ -47,6 +47,17 @@ export class EditFormDialogComponent {
   });
 
 
+  constructor() {
+    if (this.action === DialogAction.OBSERVE) {
+      this.formDriver.disable();
+    }
+
+    if (this.action === DialogAction.EDIT) {
+      this.formDriver.removeControl('birthdate' as never);
+    }
+  }
+
+
   save() {
     if (this.formDriver.valid) {
       this.dialogRef.close(this.formDriver.value);
