@@ -24,7 +24,7 @@ export class DriversComponent {
   readonly driverColumns: ColumnName[] = [
     { displayName: 'Id', key: 'id', isSortable: true },
     { displayName: 'Nombre', key: 'name', isSortable: true },
-    { displayName: 'Apellido', key: 'lastname', isSortable: true },
+    { displayName: 'Apellido', key: 'lastame', isSortable: true },
     { displayName: 'Correo', key: 'email', isSortable: true },
     { displayName: 'Teléfono', key: 'phone', isSortable: false },
 
