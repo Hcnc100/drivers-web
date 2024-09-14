@@ -15,28 +15,30 @@
     <mat-dialog-content class="mat-typography ">
         <div class="grid-form-driver">
             <mat-form-field>
-                <mat-label>Name</mat-label>
+                <mat-label>Nombre</mat-label>
                 <input matInput formControlName="name" maxlength="50">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Last Name</mat-label>
-                <input matInput formControlName="lastName" maxlength="50">
+                <mat-label>Apellidos</mat-label>
+                <input matInput formControlName="lastname" maxlength="50">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Email</mat-label>
+                <mat-label>Correo</mat-label>
                 <input matInput formControlName="email" type="email" maxlength="50">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Phone</mat-label>
+                <mat-label>Telefono</mat-label>
                 <input matInput formControlName="phone" type="tel" maxlength="20">
             </mat-form-field>
             @if(this.action !== DialogAction.EDIT) {
-                 <mat-form-field>
-                <mat-label>Birth Date</mat-label>
-                <input matInput formControlName="birthDate" type="date" maxlength="10">
+            <mat-form-field>
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="birthdate" required readonly
+                    (click)="picker.open()">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker startAt="1990-01-01"></mat-datepicker>
             </mat-form-field>
             }
-           
         </div>
 
 

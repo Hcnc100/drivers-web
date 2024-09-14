@@ -1,12 +1,12 @@
 export type Driver = {
     id: number;
     name: string;
-    lastName: string;
+    lastname: string;
     email: string;
     phone: string;
-    birthDate: string;
+    birthdate: string;
 }
 
 
-export type UpdateDriverDto = Omit<Driver, 'id' | 'birthDate'>;
+export type UpdateDriverDto = Omit<Driver, 'id' | 'birthdate'>;
 export type CreateDriverDto = Omit<Driver, 'id'>;
