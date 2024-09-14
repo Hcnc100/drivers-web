@@ -6,6 +6,7 @@
         "Navigation",
         "Pagination",
         "VehicleComponent",
-        "Authentication"
+        "Authentication",
+        "Drivers"
     ]
 }
