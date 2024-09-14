@@ -1,14 +1,13 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CreateDriverDto, Driver, UpdateDriverDto } from './model/driver.types';
 import { DriversService } from './services/drivers.service';
-import { PaginationRequest } from '../../shared/pagination/model/pagination.request';
 import { PaginationGridComponent } from "../../shared/pagination/components/pagination-grid/pagination-grid.component";
 import { ColumnName } from '../../shared/pagination/model/column.name';
 import { PaginationComponent } from "../../shared/pagination/components/pagination/pagination.component";
 import { PaginationActions } from '../../shared/pagination/model/pagination.actions';
 import { MatDialog } from '@angular/material/dialog';
-import { EditFormDialogComponent } from './components/edit-form-dialog/edit-form-dialog.component';
 import { DialogAction } from '../../shared/model/Dialog.action';
+import { DriversFormDialogComponent } from './components/drivers-form-dialog/drivers-form-dialog.component';
 
 @Component({
   selector: 'app-drivers',
@@ -68,7 +67,7 @@ export class DriversComponent {
 
   actionDriver(action: DialogAction, driver?: Driver) {
     console.log('actionDriver', action, driver);
-    const response = this.dialog.open(EditFormDialogComponent, {
+    const response = this.dialog.open(DriversFormDialogComponent, {
       width: '500px',
       data: {
         action: action,

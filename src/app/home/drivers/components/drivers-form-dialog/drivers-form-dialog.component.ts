@@ -24,12 +24,12 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  templateUrl: './edit-form-dialog.component.html',
-  styleUrl: './edit-form-dialog.component.css'
+  templateUrl: './drivers-form-dialog.component.html',
+  styleUrl: './drivers-form-dialog.component.css'
 })
-export class EditFormDialogComponent {
+export class DriversFormDialogComponent {
 
-  readonly dialogRef: MatDialogRef<EditFormDialogComponent> = inject(MatDialogRef<EditFormDialogComponent>);
+  readonly dialogRef: MatDialogRef<DriversFormDialogComponent> = inject(MatDialogRef<DriversFormDialogComponent>);
   private readonly dialogData = inject<DialogData<Driver>>(MAT_DIALOG_DATA);
 
 
