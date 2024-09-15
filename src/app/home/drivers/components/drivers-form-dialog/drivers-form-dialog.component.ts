@@ -1,4 +1,4 @@
-import { Component, inject, model } from '@angular/core';
+import { Component, inject, input, model, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Driver } from '../../model/driver.types';
 import { DialogData } from '../../model/dialog.data';
@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { constants } from '../../../../constants/constants';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { SelectProfilePictureComponent } from "../../../../shared/select-profile-picture/select-profile-picture.component";
 
 @Component({
   selector: 'app-edit-form-dialog',
@@ -23,11 +25,14 @@ import { MatNativeDateModule } from '@angular/material/core';
     FormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatIconModule,
+    SelectProfilePictureComponent
   ],
   templateUrl: './drivers-form-dialog.component.html',
   styleUrl: './drivers-form-dialog.component.css'
 })
 export class DriversFormDialogComponent {
+
 
   readonly dialogRef: MatDialogRef<DriversFormDialogComponent> = inject(MatDialogRef<DriversFormDialogComponent>);
   private readonly dialogData = inject<DialogData<Driver>>(MAT_DIALOG_DATA);
@@ -37,6 +42,9 @@ export class DriversFormDialogComponent {
   readonly action = this.dialogData.action;
 
   readonly DialogAction = DialogAction;
+
+  photoData = signal<string | undefined>(this.drive?.imageProfile).asReadonly();
+  readonly selecteFile: File | undefined;
 
   readonly formDriver = new FormGroup({
     name: new FormControl(this.drive?.name, [Validators.required]),
@@ -60,8 +68,10 @@ export class DriversFormDialogComponent {
 
   save() {
     if (this.formDriver.valid) {
-      this.dialogRef.close(this.formDriver.value);
+      this.dialogRef.close({
+        ...this.formDriver.value,
+        imageProfile: this.selecteFile
+      });
     }
   }
-
 }

@@ -23,7 +23,7 @@ export class DriversComponent {
   readonly driverColumns: ColumnName[] = [
     { displayName: 'Id', key: 'id', isSortable: true },
     { displayName: 'Nombre', key: 'name', isSortable: true },
-    { displayName: 'Apellido', key: 'lastame', isSortable: true },
+    { displayName: 'Apellido', key: 'lastname', isSortable: true },
     { displayName: 'Correo', key: 'email', isSortable: true },
     { displayName: 'Teléfono', key: 'phone', isSortable: false },
 
@@ -85,7 +85,10 @@ export class DriversComponent {
     if (!driver) return;
 
     if (action === DialogAction.CREATE) {
-      const createDriver: CreateDriverDto = { ...driver };
+      const createDriver: CreateDriverDto = {
+        ...driver,
+        birthdate: new Date(driver.birthdate).toISOString()
+      };
       this.createDriver(createDriver);
       return;
     }

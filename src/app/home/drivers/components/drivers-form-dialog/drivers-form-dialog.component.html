@@ -1,5 +1,5 @@
 <form [formGroup]="formDriver" (ngSubmit)="save()">
-    <h1 mat-dialog-title>
+    <h1 mat-dialog-title class="centered-text">
         @switch (this.action) {
         @case (DialogAction.CREATE) {
         Alta de Conductor
@@ -14,6 +14,8 @@
     </h1>
     <mat-dialog-content class="mat-typography ">
         <div class="grid-form-driver">
+            <app-select-profile-picture [photoData]="photoData()" [(photoFile)]="this.selecteFile"
+                class="full-width-grid" />
             <mat-form-field>
                 <mat-label>Nombre</mat-label>
                 <input matInput formControlName="name" maxlength="50">

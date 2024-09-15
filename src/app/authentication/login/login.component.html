@@ -14,18 +14,17 @@
         </div>
 
         <div class="container-field">
-            <mat-form-field >
+            <mat-form-field>
                 <mat-label>Password</mat-label>
                 <input matInput formControlName="password" placeholder="********" required maxlength="50" matInput
-                    [type]="isPasswordVisible() ? 'text' : 'password'"
-                    >
+                    [type]="isPasswordVisible() ? 'text' : 'password'">
                 <button mat-icon-button matSuffix (click)="togglePassword($event)" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="isPasswordVisible()">
                     <mat-icon>{{isPasswordVisible() ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
                 @if (this.formLogin.controls.password.invalid){
                     <mat-error>{{errorPassword()}}</mat-error>
-                    }
+                }
             </mat-form-field>
         </div>
 

@@ -24,3 +24,17 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+
+
+.full-width-grid {
+    grid-column: 1 / -1; 
+}
+
+.two-columns-grid {
+    grid-column: span 2;
+}
+
+.three-columns-grid {
+    grid-column: span 3;
+}
