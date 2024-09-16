@@ -8,6 +8,7 @@ import { PaginationActions } from '../../shared/pagination/model/pagination.acti
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAction } from '../../shared/model/Dialog.action';
 import { DriversFormDialogComponent } from './components/drivers-form-dialog/drivers-form-dialog.component';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-drivers',
@@ -19,6 +20,7 @@ import { DriversFormDialogComponent } from './components/drivers-form-dialog/dri
 export class DriversComponent {
 
   readonly dialog = inject(MatDialog);
+  readonly toast = inject(ToastService);
 
   readonly driverColumns: ColumnName[] = [
     { displayName: 'Id', key: 'id', isSortable: true },
@@ -66,7 +68,6 @@ export class DriversComponent {
 
 
   actionDriver(action: DialogAction, driver?: Driver) {
-    console.log('actionDriver', action, driver);
     const response = this.dialog.open(DriversFormDialogComponent, {
       width: '500px',
       data: {
@@ -101,22 +102,31 @@ export class DriversComponent {
 
   private createDriver(createDriverDto: CreateDriverDto) {
     this.driversService.createDriver(createDriverDto).subscribe({
-      next: () => console.log('createDriver'),
-      error: (error) => console.log('error createDriver', error)
+      next: () => this.toast.showSuccess('Conductor creado', 'Se ha creado un nuevo conductor'),
+      error: (error) => {
+        console.log('error createDriver', error)
+        this.toast.showError('Error', 'No se ha podido crear el conductor')
+      }
     })
   }
 
   private updateDriver(id: number, updateDriver: UpdateDriverDto) {
     this.driversService.updateDriver(id, updateDriver).subscribe({
-      next: () => console.log('updateDriver'),
-      error: (error) => console.log('error updateDriver', error)
+      next: () => this.toast.showSuccess('Conductor actualizado', 'Se ha actualizado el conductor'),
+      error: (error) => {
+        console.log('error updateDriver', error)
+        this.toast.showError('Error', 'No se ha podido actualizar el conductor')
+      }
     })
   }
 
   private deleteDriver(id: number) {
     this.driversService.deleteDriver(id).subscribe({
-      next: () => console.log('deleteDriver'),
-      error: (error) => console.log('error deleteDriver', error)
+      next: () => this.toast.showSuccess('Conductor eliminado', 'Se ha eliminado el conductor'),
+      error: (error) => {
+        console.log('error deleteDriver', error)
+        this.toast.showError('Error', 'No se ha podido eliminar el conductor')
+      }
     })
   }
 

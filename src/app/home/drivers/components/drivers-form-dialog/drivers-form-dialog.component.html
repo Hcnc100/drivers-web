@@ -12,42 +12,38 @@
         }
         }
     </h1>
-    <mat-dialog-content class="mat-typography ">
+    <mat-dialog-content class="mat-typography">
         <div class="grid-form-driver">
             <app-select-profile-picture [photoData]="photoData()" [(photoFile)]="this.selecteFile"
-                class="full-width-grid" />
+                class="full-width-grid"></app-select-profile-picture>
             <mat-form-field>
                 <mat-label>Nombre</mat-label>
-                <input matInput formControlName="name" maxlength="50">
+                <input matInput formControlName="name" name="name" maxlength="50">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Apellidos</mat-label>
-                <input matInput formControlName="lastname" maxlength="50">
+                <input matInput formControlName="lastname" name="lastname" maxlength="50">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Correo</mat-label>
-                <input matInput formControlName="email" type="email" maxlength="50">
+                <input matInput formControlName="email" name="email" type="email" maxlength="50">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Telefono</mat-label>
-                <input matInput formControlName="phone" type="tel" maxlength="20">
+                <input matInput formControlName="phone" name="phone" type="tel" maxlength="20">
             </mat-form-field>
             @if(this.action !== DialogAction.EDIT) {
             <mat-form-field>
                 <mat-label>Fecha de nacimiento</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="birthdate" required readonly
-                    (click)="picker.open()">
+                <input matInput [matDatepicker]="picker" formControlName="birthdate" required name="birthdate">
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker startAt="1990-01-01"></mat-datepicker>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             }
         </div>
-
-
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cancel</button>
         <button mat-button type="submit">Save</button>
     </mat-dialog-actions>
-
 </form>

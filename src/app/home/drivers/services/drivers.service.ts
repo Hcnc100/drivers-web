@@ -37,7 +37,8 @@ export class DriversService implements IPaginationServices {
     Object.entries(driver).forEach(([key, value]) => {
       if (key === 'imageProfileFile') {
         if (value) {
-          formData.append('imageProfileFile', value as File);
+          // * If the value is a file, we append it to the formData
+          formData.append('imageProfile', value as File);
         }
       } else {
         formData.append(key, value as string);

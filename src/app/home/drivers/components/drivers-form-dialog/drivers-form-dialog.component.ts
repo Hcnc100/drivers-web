@@ -12,6 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { SelectProfilePictureComponent } from "../../../../shared/select-profile-picture/select-profile-picture.component";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit-form-dialog',
@@ -66,11 +67,12 @@ export class DriversFormDialogComponent {
   }
 
 
+
   save() {
     if (this.formDriver.valid) {
       this.dialogRef.close({
         ...this.formDriver.value,
-        imageProfile: this.selecteFile
+        imageProfileFile: this.selecteFile
       });
     }
   }
