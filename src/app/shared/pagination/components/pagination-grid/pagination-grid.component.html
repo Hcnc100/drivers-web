@@ -1,6 +1,6 @@
 
 <div class="mat-elevation-z4">
-    <table mat-table [dataSource]="data" matSort matSortActive="id" matSortDisableClear matSortDirection="asc"
+    <table mat-table [dataSource]="data" matSort  matSortDisableClear matSortDirection="asc"
         (matSortChange)="sortData($event)">
         @for (column of this.tableColumns; track $index) {
         <ng-container matColumnDef="{{column.displayName}}">

@@ -1,11 +1,17 @@
 
+
+
 .grid-form-driver{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     padding-top: 10px;
     box-sizing: border-box;
+    row-gap: 10px;
 }
+
+
+
 
 @media (max-width: 600px) {
     .grid-form-driver{

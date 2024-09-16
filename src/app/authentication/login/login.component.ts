@@ -137,9 +137,9 @@ export class LoginComponent {
   }
 
   togglePassword(event: MouseEvent) {
+    event.preventDefault();
     this._isPasswordVisible.update(value => !value);
     console.log('togglePassword', this.isPasswordVisible());
-    event.stopPropagation();
   }
 
 

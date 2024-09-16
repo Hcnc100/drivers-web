@@ -27,12 +27,30 @@ export class DriversService implements IPaginationServices {
   getAllPaginated<Driver>(
     paginationRequest: PaginationRequest
   ): Observable<PaginatedResult<Driver>> {
+
     const query = generatePaginationQuery(paginationRequest);
     return this.http.get<PaginatedResult<Driver>>(`${this.controller}?${query}`);
   }
 
+  private driverToFormData(driver: CreateDriverDto | UpdateDriverDto): FormData {
+    const formData = new FormData();
+    Object.entries(driver).forEach(([key, value]) => {
+      if (key === 'imageProfileFile') {
+        if (value) {
+          // * If the value is a file, we append it to the formData
+          formData.append('imageProfile', value as File);
+        }
+      } else {
+        formData.append(key, value as string);
+      }
+    });
+
+    return formData;
+  }
+
   createDriver(createDriverDto: CreateDriverDto) {
-    return this.http.post<Driver>(this.controller, createDriverDto).pipe(
+    const createDriverDtoFormData = this.driverToFormData(createDriverDto);
+    return this.http.post<Driver>(this.controller, createDriverDtoFormData).pipe(
       tap(() => this.notifyChange())
     );
 
@@ -43,7 +61,8 @@ export class DriversService implements IPaginationServices {
     );
   }
   updateDriver(id: number, driver: UpdateDriverDto) {
-    return this.http.patch<Driver>(`${this.controller}/${id}`, driver).pipe(
+    const driverFormData = this.driverToFormData(driver);
+    return this.http.patch<Driver>(`${this.controller}/${id}`, driverFormData).pipe(
       tap(() => this.notifyChange())
     );
   }

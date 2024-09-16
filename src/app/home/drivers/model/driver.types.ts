@@ -5,8 +5,9 @@ export type Driver = {
     email: string;
     phone: string;
     birthdate: string;
+    imageProfile?: string;
 }
 
 
-export type UpdateDriverDto = Omit<Driver, 'id' | 'birthdate'>;
-export type CreateDriverDto = Omit<Driver, 'id'>;
+export type UpdateDriverDto = Omit<Driver, 'id' | 'birthdate' | 'imageProfile'> & { imageProfileFile?: File };
+export type CreateDriverDto = Omit<Driver, 'id' | 'imageProfile'> & { imageProfileFile?: File };
