@@ -1,0 +1,33 @@
+
+.grid-form-driver{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    row-gap: 10px;
+}
+
+.container-rotulated{
+    padding-left: 10px;
+}
+
+
+@media (max-width: 600px) {
+    .grid-form-driver{
+        grid-template-columns: 1fr;
+    }
+}
+
+.option-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .color-preview {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #000;
+    display: inline-block;
+    margin-right: 8px;
+  }

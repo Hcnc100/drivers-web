@@ -14,6 +14,7 @@ import { PaginationRequest } from '../../model/pagination.request';
 import { GeneralActions, PaginationActions } from '../../model/pagination.actions';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatButton, MatButtonModule } from '@angular/material/button';
+import { CustomTransformPipe } from '../../../pipes/transform.pipe';
 
 @Component({
   selector: 'app-pagination-grid',
@@ -25,7 +26,8 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
     MatProgressSpinnerModule,
     MatTableModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    CustomTransformPipe
   ],
   templateUrl: './pagination-grid.component.html',
   styleUrl: './pagination-grid.component.css'

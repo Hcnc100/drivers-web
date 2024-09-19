@@ -17,6 +17,13 @@ export class TokenService {
     return localStorage.getItem(constants.KEY_REFRESH_TOKEN) || '';
   }
 
+  get tokenData(): TokenData {
+    return {
+      token: this.token,
+      refreshToken: this.refreshToken
+    };
+  }
+
   set tokenData(tokenData: TokenData) {
     localStorage.setItem(constants.KEY_TOKEN, tokenData.token);
     localStorage.setItem(constants.KEY_REFRESH_TOKEN, tokenData.refreshToken);
