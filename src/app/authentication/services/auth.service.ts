@@ -28,8 +28,8 @@ export class AuthService {
   }
 
   refreshToken() {
-    const refreshToken = this.tokenService.refreshToken;
-    return this.http.post<LoginResponse>(`${this.controller}/refresh`, { refreshToken }).pipe(
+    const tokenData = this.tokenService.tokenData;
+    return this.http.post<LoginResponse>(`${this.controller}/refresh`, tokenData).pipe(
       tap((response: LoginResponse) => {
         const tokenData = {
           token: response.token,
