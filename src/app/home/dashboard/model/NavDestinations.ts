@@ -31,5 +31,10 @@ export const navDestinations: NavDestination[] = [
         label: 'Trips',
         icon: 'directions_bus',
         route: 'trips'
-    }
+    },
+    {
+        label: 'Maps',
+        icon: 'map',
+        route: 'maps'
+    },
 ];

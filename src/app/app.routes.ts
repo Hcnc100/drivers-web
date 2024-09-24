@@ -7,6 +7,7 @@ import { VehiclesComponent } from './home/vehicles/vehicles.component';
 import { TripsComponent } from './home/trips/trips.component';
 import { ClientsComponent } from './home/clients/clients.component';
 import { RequestComponent } from './home/request/request.component';
+import { MapsComponent } from './shared/maps/maps.component';
 
 export const routes: Routes = [
     {
@@ -48,6 +49,10 @@ export const homeRoutes: Routes = [
     {
         path: 'requests',
         component: RequestComponent,
+    },
+    {
+        path: 'maps',
+        component: MapsComponent,
     },
     {
         path: '',
