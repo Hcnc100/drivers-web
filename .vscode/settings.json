@@ -8,6 +8,7 @@
         "VehicleComponent",
         "Authentication",
         "Drivers",
-        "VehicleForm"
+        "VehicleForm",
+        "Client"
     ]
 }

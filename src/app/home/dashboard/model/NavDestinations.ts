@@ -18,6 +18,16 @@ export const navDestinations: NavDestination[] = [
         route: 'vehicles'
     },
     {
+        label: 'Clients',
+        icon: 'people',
+        route: 'clients'
+    },
+    {
+        label: 'Requests',
+        icon: 'map',
+        route: 'requests'
+    },
+    {
         label: 'Trips',
         icon: 'directions_bus',
         route: 'trips'

@@ -5,6 +5,8 @@ import { guardGuard } from './authentication/guard/guard.guard';
 import { DashboardComponent } from './home/dashboard/components/dashboard/dashboard.component';
 import { VehiclesComponent } from './home/vehicles/vehicles.component';
 import { TripsComponent } from './home/trips/trips.component';
+import { ClientsComponent } from './home/clients/clients.component';
+import { RequestComponent } from './home/request/request.component';
 
 export const routes: Routes = [
     {
@@ -38,6 +40,14 @@ export const homeRoutes: Routes = [
     {
         path: 'trips',
         component: TripsComponent,
+    },
+    {
+        path: 'clients',
+        component: ClientsComponent,
+    },
+    {
+        path: 'requests',
+        component: RequestComponent,
     },
     {
         path: '',

@@ -28,7 +28,6 @@ export class DriversComponent {
     { displayName: 'Apellido', key: 'lastname', isSortable: true },
     { displayName: 'Correo', key: 'email', isSortable: true },
     { displayName: 'Teléfono', key: 'phone', isSortable: false },
-
   ];
 
   readonly paginationActions: PaginationActions[] = [
