@@ -5,8 +5,9 @@ import { ColumnName } from '../../shared/pagination/model/column.name';
 import { PaginationActions } from '../../shared/pagination/model/pagination.actions';
 import { RequestService } from './services/request.service';
 import { PaginationComponent } from "../../shared/pagination/components/pagination/pagination.component";
-import { Address, Point } from './model/request';
+import { Address, RequestTrip } from './model/request';
 import { RequestStates, requestStatesToLabel } from './model/RequestStates.enum';
+import { RequestDialogComponent } from './components/request-dialog/request-dialog.component';
 
 @Component({
   selector: 'app-request',
@@ -35,7 +36,9 @@ export class RequestComponent {
       name: 'Ver',
       icon: 'visibility',
       description: 'Ver solicitud',
-      action: (data: any) => { }
+      action: (data: RequestTrip) => {
+        this.showRequest(data);
+      }
     }
   ];
 
@@ -58,6 +61,15 @@ export class RequestComponent {
     return new Date(date).toLocaleDateString();
   }
 
+
+  showRequest(requestTrip: RequestTrip): void {
+    this.dialog.open(RequestDialogComponent, {
+      data: {
+        data: requestTrip
+      },
+      width: '80%',
+    });
+  }
 
 
 }

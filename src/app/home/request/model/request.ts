@@ -20,7 +20,7 @@ export interface Address {
     location?: Location;
 }
 
-export interface Point {
+export interface Location {
     latitude?: number;
     longitude?: number;
 }

@@ -1,0 +1,9 @@
+<h2 mat-dialog-title class="centered-text">Detalles de la solicitud</h2>
+<mat-dialog-content>
+  <app-maps
+    [listPoints]="listPoints()"
+  ></app-maps>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'center'">
+    <button mat-flat-button mat-dialog-close cdkFocusInitial>Aceptar</button>
+</mat-dialog-actions>
