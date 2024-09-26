@@ -5,7 +5,7 @@ import { ColumnName } from '../../shared/pagination/model/column.name';
 import { PaginationActions } from '../../shared/pagination/model/pagination.actions';
 import { RequestService } from './services/request.service';
 import { PaginationComponent } from "../../shared/pagination/components/pagination/pagination.component";
-import { Point } from './model/request';
+import { Address, Point } from './model/request';
 import { RequestStates, requestStatesToLabel } from './model/RequestStates.enum';
 
 @Component({
@@ -23,8 +23,8 @@ export class RequestComponent {
 
   readonly requestColumns: ColumnName[] = [
     { displayName: 'Id', key: 'id', isSortable: true },
-    { displayName: 'Punto de partida', key: 'startPoint', isSortable: false, transform: this.pointToString },
-    { displayName: 'Punto de llegada', key: 'endPoint', isSortable: false, transform: this.pointToString },
+    { displayName: 'Punto de partida', key: 'startAddress', isSortable: false, transform: this.addressToString },
+    { displayName: 'Punto de llegada', key: 'endAddress', isSortable: false, transform: this.addressToString },
     { displayName: 'Fecha de solicitud', key: 'createdAt', isSortable: true, transform: this.dateToString },
     { displayName: 'Estado', key: 'state', isSortable: true, transform: requestStatesToLabel }
 
@@ -50,8 +50,8 @@ export class RequestComponent {
   ];
 
 
-  pointToString(point: Point): string {
-    return `${point.latitude}, ${point.longitude}`;
+  addressToString(address: Address): string {
+    return address.shortAddress || 'Sin dirección';
   }
 
   dateToString(date: Date): string {
