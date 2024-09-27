@@ -67,7 +67,9 @@ export class RequestComponent {
       data: {
         data: requestTrip
       },
-      width: '80%',
+      width: '70%',
+      maxWidth: '1200px',
+      disableClose: true
     });
   }
 

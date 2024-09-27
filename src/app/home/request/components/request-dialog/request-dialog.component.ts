@@ -6,6 +6,7 @@ import { MapsComponent } from '../../../../shared/maps/maps.component';
 import { DialogData } from '../../../drivers/model/dialog.data';
 import { RequestTrip } from '../../model/request';
 import { MapsPoint } from '../../../../shared/maps/model/MapsPoint';
+import { DistancePipe } from "../../../../shared/pipes/distance.pipe";
 
 @Component({
   selector: 'app-request-dialog',
@@ -14,7 +15,8 @@ import { MapsPoint } from '../../../../shared/maps/model/MapsPoint';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    MapsComponent
+    MapsComponent,
+    DistancePipe
   ],
   templateUrl: './request-dialog.component.html',
   styleUrl: './request-dialog.component.css'

@@ -10,8 +10,9 @@ import { KeyResponse } from '../models/key.response';
 export class KeystoreService {
 
   private readonly controller = environment.apiUrl + environment.apiVersion + '/keystore';
+
   private _mapsKey?: string;
-  mapKey?: string = this._mapsKey;
+  private _mapId?: string;
 
   constructor(
     private readonly http: HttpClient,
@@ -19,9 +20,8 @@ export class KeystoreService {
 
   async getMapsKey() {
 
-    if (this._mapsKey) {
-      return this._mapsKey;
-    }
+    if (this._mapsKey) return this._mapsKey;
+
     try {
       const key = await firstValueFrom(this.http.get<KeyResponse>(`${this.controller}/maps`));
       this._mapsKey = key.key;
@@ -31,4 +31,18 @@ export class KeystoreService {
       throw error;
     }
   }
+
+  async getMapId() {
+    if (this._mapId) return this._mapId;
+
+    try {
+      const key = await firstValueFrom(this.http.get<KeyResponse>(`${this.controller}/mapId`));
+      this._mapId = key.key;
+      return this._mapId;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
 }
