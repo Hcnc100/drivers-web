@@ -10,6 +10,7 @@
         "Drivers",
         "VehicleForm",
         "Client",
-        "Maps"
+        "Maps",
+        "Trip"
     ]
 }

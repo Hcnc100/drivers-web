@@ -4,4 +4,5 @@ export interface ColumnName {
     key: string;
     isSortable: boolean;
     transform?: (value: any) => any;
+    width?: string;
 }
