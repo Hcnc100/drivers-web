@@ -4,6 +4,7 @@ import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
 import { MapsLoaderService } from './services/maps-loader.service';
 import { MapsPoint } from './model/MapsPoint';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import * as polyline from '@mapbox/polyline';
 
 @Component({
   selector: 'app-maps',
@@ -26,7 +27,14 @@ export class MapsComponent implements OnInit {
   readonly _options = signal<google.maps.MapOptions | null>(null);
   options = this._options.asReadonly();
 
-  listPoints = input.required<MapsPoint[]>();
+  readonly _polylineOptions = signal<google.maps.PolylineOptions | null>(null);
+  polylineOptions = this._polylineOptions.asReadonly();
+
+  readonly listPoints = input<MapsPoint[]>([]);
+  readonly polylineEncode = input<string | null>(null);
+
+  listPointPolilyne = signal<MapsPoint[]>([]);
+
 
   private googleMap: google.maps.Map | undefined;
 
@@ -38,7 +46,9 @@ export class MapsComponent implements OnInit {
 
   OnMapReady(map: google.maps.Map) {
     this.googleMap = map;
-    this.updateMapCenter();
+    this.updateMapCenterPoints();
+    this.setupPolylineOptions();
+    this.updatePolylinePoints();
   }
 
 
@@ -48,13 +58,7 @@ export class MapsComponent implements OnInit {
         this.mapsLoaderService.load(),
         this.keystoreService.getMapId()
       ]);
-      this._options.set({
-        mapId: mapId,
-        streetViewControl: false,
-        zoomControl: false,
-        fullscreenControl: false,
-        mapTypeControl: false,
-      });
+      this.setupOptions(mapId);
     } catch (error) {
       console.error(error);
     } finally {
@@ -62,14 +66,66 @@ export class MapsComponent implements OnInit {
     }
   }
 
+  private setupOptions(
+    mapId: string,
+  ): void {
+    console.log('mapId', mapId);
+    this._options.set({
+      mapId: mapId,
+      streetViewControl: false,
+      zoomControl: false,
+      fullscreenControl: false,
+      mapTypeControl: false,
+    });
+  }
+  private decodePolyline(polylineEncode: string): MapsPoint[] {
+    const points: MapsPoint[] = [];
+    const coords = polyline.decode(polylineEncode);
+    for (const [index, coord] of coords.entries()) {
+      points.push({
+        lat: coord[0],
+        lng: coord[1],
+        name: `Punto ${index + 1}`,
+      });
+    }
+    return points;
+  }
 
-  updateMapCenter(): void {
+  private setupPolylineOptions(): void {
+
+    const points = this.polylineEncode();
+
+    if (!points) return;
+
+    this.listPointPolilyne.set(this.decodePolyline(points));
+
+    this._polylineOptions.set({
+      path: this.listPointPolilyne(),
+      strokeColor: '#00000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+    });
+
+    new google.maps.Polyline(this._polylineOptions()).setMap(this.googleMap!);
+  }
+
+
+  updateMapCenterPoints(): void {
     const markerBounds = new google.maps.LatLngBounds();
     for (const point of this.listPoints()) {
       markerBounds.extend(point);
     }
     this.googleMap?.fitBounds(markerBounds);
   }
+
+  updatePolylinePoints(): void {
+    const markerBounds = new google.maps.LatLngBounds();
+    for (const point of this.listPointPolilyne()) {
+      markerBounds.extend(point);
+    }
+    this.googleMap?.fitBounds(markerBounds);
+  }
+
 
 
 }

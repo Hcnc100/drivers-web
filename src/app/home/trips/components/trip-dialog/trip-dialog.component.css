@@ -1,0 +1,28 @@
+.container-request-details {
+    gap: 20px;
+}
+
+.container-maps {
+    width: 65%;
+    height: 500px;
+}
+
+.container-info {
+    width: 35%;
+}
+
+.info-row{
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.bold {
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+
+p {
+    white-space: normal;
+}
+

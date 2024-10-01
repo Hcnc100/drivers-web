@@ -11,11 +11,5 @@ export interface Trip {
         id: number;
         name: string;
     };
-    tracking?: Tracking[];
-}
-
-
-export interface Tracking {
-    lat: number;
-    lng: number;
+    tracking?: string;
 }
