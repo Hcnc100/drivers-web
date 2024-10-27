@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { SearchGridComponent } from './search-grid.component';
 
@@ -8,10 +9,13 @@ describe('SearchGridComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchGridComponent]
+      imports: [SearchGridComponent],
+      providers: [
+        provideNoopAnimations()
+      ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(SearchGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
