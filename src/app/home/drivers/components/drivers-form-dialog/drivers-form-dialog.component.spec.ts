@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DriversFormDialogComponent } from './drivers-form-dialog.component';
 
-import { EditFormDialogComponent } from './edit-form-dialog.component';
 
 describe('EditFormDialogComponent', () => {
-  let component: EditFormDialogComponent;
-  let fixture: ComponentFixture<EditFormDialogComponent>;
+  let component: DriversFormDialogComponent;
+  let fixture: ComponentFixture<DriversFormDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditFormDialogComponent]
+      imports: [DriversFormDialogComponent]
     })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(EditFormDialogComponent);
+      .compileComponents();
+
+    fixture = TestBed.createComponent(DriversFormDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

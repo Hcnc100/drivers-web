@@ -59,6 +59,8 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
   private search$ = toObservable(this.search);
   private subscription?: Subscription;
 
+
+
   displayedColumns = computed(() => {
     const list = this.tableColumns.map(column => column.displayName);
     if (this.paginationActions && this.paginationActions.length > 0) {

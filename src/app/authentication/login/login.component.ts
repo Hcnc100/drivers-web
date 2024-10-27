@@ -1,4 +1,4 @@
-import { Component, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogService } from '../../shared/simple-dialog/services/dialog.service';
 import { ErrorForm } from '../../shared/model/ErrorForm';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -23,14 +24,18 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CommonModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly dialogService: DialogService = inject(DialogService);
+  private readonly router: Router = inject(Router);
 
-  formLogin = new FormGroup({
+  readonly formLogin = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern(constants.PATTERN_EMAIL)]),
     password: new FormControl('', [Validators.required])
   });
@@ -41,51 +46,17 @@ export class LoginComponent {
   private _isPasswordVisible = signal<boolean>(false);
   isPasswordVisible = this._isPasswordVisible.asReadonly();
 
-  private _errorEmail = signal<string>('');
-  errorEmail = this._errorEmail.asReadonly();
 
-  private _errorPassword = signal<string>('');
-  errorPassword = this._errorPassword.asReadonly();
-
-  private errors = {
+  readonly validators = {
     email: [
-      { type: 'required', message: 'Email is required' },
-      { type: 'pattern', message: 'Invalid email' }
+      { type: 'required', message: 'El email es requerido' },
+      { type: 'pattern', message: 'El email no es válido' }
     ],
     password: [
-      { type: 'required', message: 'Password is required' }
+      { type: 'required', message: 'La contraseña es requerida' }
     ]
   }
 
-  constructor(
-    private authService: AuthService,
-    private dialogService: DialogService,
-    private router: Router
-  ) {
-
-    this.createListenerByFormControl(this.formLogin.controls.email, () => {
-      this.validateFormControl(this.formLogin.controls.email, this.errors.email, this._errorEmail);
-    });
-    this.createListenerByFormControl(this.formLogin.controls.password, () => {
-      this.validateFormControl(this.formLogin.controls.password, this.errors.password, this._errorPassword);
-    });
-  }
-  private validateFormControl(control: FormControl, errors: ErrorForm[], signalError: WritableSignal<string>) {
-    if (control.invalid) {
-      const error = errors.find(error => control.hasError(error.type));
-      if (error) {
-        signalError.set(error.message);
-      }
-    } else {
-      signalError.set('');
-    }
-  }
-
-  private createListenerByFormControl(control: FormControl, updateErrorMessage: () => void) {
-    merge(control.statusChanges, control.valueChanges)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => updateErrorMessage());
-  }
 
   login() {
     this.formLogin.markAllAsTouched();
@@ -122,18 +93,17 @@ export class LoginComponent {
   }
 
   private validateErrors(error: any) {
-    console.log('error', error);
     if (error.status === 404) {
       this.dialogService.showErrorMessage('Usuario no encontrado');
+      return;
     }
 
     if (error.status === 401) {
       this.dialogService.showErrorMessage('Verifique sus credenciales');
+      return;
     }
 
-    if (error.status === 500) {
-      this.dialogService.showErrorMessage('Error en el servidor');
-    }
+    this.dialogService.showErrorMessage('Error en el login, intente nuevamente');
   }
 
   togglePassword(event: MouseEvent) {

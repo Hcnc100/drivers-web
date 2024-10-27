@@ -1,0 +1,12 @@
+module.exports = {
+  coverageIstanbulReporter: {
+    thresholds: {
+      global: {
+        statements: 80,
+        lines: 80,
+        branches: 70,
+        functions: 80
+      }
+    }
+  }
+};

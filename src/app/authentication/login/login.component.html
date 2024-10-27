@@ -4,26 +4,44 @@
         <div class="container-field">
             <mat-form-field>
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="email" placeholder="example@mail.com" required maxlength="50"
-                    type="email">
-                    @if (this.formLogin.controls.email.invalid){
-                        <mat-error>{{errorEmail()}}</mat-error>
-                        }
+                <input matInput [formControl]="formLogin.controls.email" placeholder="example@mail.com" required
+                    maxlength="50" type="email">
+                @if (this.formLogin.controls.email.invalid && (this.formLogin.controls.email.dirty ||
+                this.formLogin.controls.email.touched)){
+                <mat-error>
+                    <ng-container *ngTemplateOutlet="
+                            error;
+                            context: {
+                              control: formLogin.controls.email,
+                              validators: validators.email
+                            }
+                          "></ng-container>
+                        </mat-error>
+                }
             </mat-form-field>
-           
+
         </div>
 
         <div class="container-field">
             <mat-form-field>
                 <mat-label>Password</mat-label>
-                <input matInput formControlName="password" placeholder="********" required maxlength="50" matInput
-                    [type]="isPasswordVisible() ? 'text' : 'password'">
+                <input matInput [formControl]="formLogin.controls.password" placeholder="********" required
+                    maxlength="50" matInput [type]="isPasswordVisible() ? 'text' : 'password'">
                 <button mat-icon-button matSuffix (click)="togglePassword($event)" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="isPasswordVisible()">
                     <mat-icon>{{isPasswordVisible() ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
-                @if (this.formLogin.controls.password.invalid){
-                    <mat-error>{{errorPassword()}}</mat-error>
+                @if (this.formLogin.controls.password.invalid && (this.formLogin.controls.password.dirty ||
+                this.formLogin.controls.password.touched)){
+                <mat-error>
+                    <ng-container *ngTemplateOutlet="
+                            error;
+                            context: {
+                              control: formLogin.controls.password,
+                              validators: validators.password
+                            }
+                          "></ng-container>
+                        </mat-error>
                 }
             </mat-form-field>
         </div>
@@ -37,3 +55,14 @@
 
     </form>
 </div>
+
+
+<ng-template #error let-c="control" let-v="validators">
+    @if (c.hasError) {
+    @for (error of v; track $index) {
+    @if (c.errors[error.type]) {
+    {{ error.message }}
+    }
+    }
+    }
+</ng-template>
