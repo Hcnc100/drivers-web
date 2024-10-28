@@ -2,7 +2,8 @@
     <mat-form-field class="search-form">
         <mat-label>Búsqueda</mat-label>
         <span matTextPrefix><mat-icon>search</mat-icon></span>
-        <input type="search" matInput placeholder="Buscar..." [(ngModel)]="search" [ngModelOptions]="{standalone: true}" name="search">
+        <input type="search" matInput placeholder="Buscar..."  name="search"
+            (input)="this.updateSearch($event)">
         @if(search()){
         <button mat-icon-button matSuffix (click)="clearSearch()">
             <mat-icon>close</mat-icon>

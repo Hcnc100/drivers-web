@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaginationActionsComponent } from './pagination-actions.component';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('PaginationActionsComponent', () => {
   let component: PaginationActionsComponent;
@@ -8,10 +9,13 @@ describe('PaginationActionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaginationActionsComponent]
+      imports: [PaginationActionsComponent],
+      providers: [
+        provideNoopAnimations(),
+      ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(PaginationActionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

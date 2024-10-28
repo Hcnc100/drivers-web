@@ -19,7 +19,8 @@ export class VehiclesService implements IPaginationServices {
 
 
   private readonly controller = environment.apiUrl + environment.apiVersion + '/vehicles';
-  notifyChangeSignal: Subject<number> = new Subject<number>();
+  _notifyChangeSignal = signal<number>(0);
+  notifyChangeSignal = this._notifyChangeSignal.asReadonly();
 
   constructor(
     private http: HttpClient
@@ -27,7 +28,7 @@ export class VehiclesService implements IPaginationServices {
 
 
   notifyChange(): void {
-    this.notifyChangeSignal.next(Date.now());
+    this._notifyChangeSignal.set(Date.now());
   }
   getAllPaginated<Vehicle>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Vehicle>> {
     const query = generatePaginationQuery(paginationRequest);

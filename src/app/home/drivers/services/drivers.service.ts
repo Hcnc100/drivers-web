@@ -14,14 +14,15 @@ import { Driver, UpdateDriverDto, CreateDriverDto } from '../model/driver.types'
 export class DriversService implements IPaginationServices {
 
   private readonly controller = environment.apiUrl + environment.apiVersion + '/drivers';
-  notifyChangeSignal: Subject<number> = new Subject<number>();
+  _notifyChangeSignal = signal<number>(0);
+  notifyChangeSignal = this._notifyChangeSignal.asReadonly();
 
   constructor(
     private http: HttpClient,
   ) { }
 
   notifyChange(): void {
-    this.notifyChangeSignal.next(Date.now());
+    this._notifyChangeSignal.set(Date.now());
   }
 
   getAllPaginated<Driver>(

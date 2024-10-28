@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { IPaginationServices } from '../../../shared/pagination/interfaces/IPaginationServices';
 import { Subject, Observable } from 'rxjs';
 import { PaginationRequest } from '../../../shared/pagination/model/pagination.request';
@@ -14,7 +14,9 @@ import { Client } from '../model/client';
 export class ClientsService implements IPaginationServices {
 
   private readonly controller = environment.apiUrl + environment.apiVersion + '/client';
-  notifyChangeSignal: Subject<number> = new Subject<number>();
+
+  _notifyChangeSignal = signal<number>(0);
+  notifyChangeSignal = this._notifyChangeSignal.asReadonly();
 
 
   constructor(
@@ -26,6 +28,6 @@ export class ClientsService implements IPaginationServices {
     return this.http.get<PaginatedResult<Client>>(`${this.controller}?${query}`);
   }
   notifyChange(): void {
-    this.notifyChangeSignal.next(Date.now());
+    this._notifyChangeSignal.set(Date.now());
   }
 }
