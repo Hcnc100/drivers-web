@@ -2,7 +2,7 @@ import { Component, inject, Signal, signal, WritableSignal } from '@angular/core
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { constants } from '../../constants/constants';
+import { constants, messages } from '../../constants/constants';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../services/auth.service';
 import { LoginDTO } from '../model/LoginDTO';
@@ -49,23 +49,25 @@ export class LoginComponent {
 
   readonly validators = {
     email: [
-      { type: 'required', message: 'El email es requerido' },
-      { type: 'pattern', message: 'El email no es válido' }
+      { type: 'required', message: messages.EMAIL.REQUIRED },
+      { type: 'pattern', message: messages.EMAIL.INVALID_PATTERN }
     ],
     password: [
-      { type: 'required', message: 'La contraseña es requerida' }
+      { type: 'required', message: messages.PASSWORD.REQUIRED }
     ]
   }
 
 
   login() {
     this.formLogin.markAllAsTouched();
-    if (this.formLogin.valid) {
-      const loginDTO = this.generateLoginForm();
-      this.loginWithCredential(loginDTO)
-    } else {
-      this.dialogService.showErrorMessage('Verifique sus datos');
+    if (!this.formLogin.valid) {
+      this.dialogService.showErrorMessage(messages.INVALID_FORM);
+      return;
     }
+
+    const loginDTO = this.generateLoginForm();
+    this.loginWithCredential(loginDTO)
+
   }
 
   private loginWithCredential(loginDTO: LoginDTO) {
@@ -94,22 +96,21 @@ export class LoginComponent {
 
   private validateErrors(error: any) {
     if (error.status === 404) {
-      this.dialogService.showErrorMessage('Usuario no encontrado');
+      this.dialogService.showErrorMessage(messages.LOGIN.ERROR_NOT_FOUND);
       return;
     }
 
     if (error.status === 401) {
-      this.dialogService.showErrorMessage('Verifique sus credenciales');
+      this.dialogService.showErrorMessage(messages.LOGIN.ERROR_UNAUTHORIZED);
       return;
     }
 
-    this.dialogService.showErrorMessage('Error en el login, intente nuevamente');
+    this.dialogService.showErrorMessage(messages.LOGIN.ERROR_GENERIC);
   }
 
   togglePassword(event: MouseEvent) {
     event.preventDefault();
     this._isPasswordVisible.update(value => !value);
-    console.log('togglePassword', this.isPasswordVisible());
   }
 
 
