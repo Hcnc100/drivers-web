@@ -1,4 +1,4 @@
-import { Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { IPaginationServices } from '../../../shared/pagination/interfaces/IPaginationServices';
 import { BehaviorSubject, Observable, pipe, Subject, tap } from 'rxjs';
 import { PaginatedResult } from '../../../shared/pagination/model/pagination.result';
@@ -12,14 +12,11 @@ import { Driver, UpdateDriverDto, CreateDriverDto } from '../model/driver.types'
   providedIn: 'root'
 })
 export class DriversService implements IPaginationServices {
+  private readonly http: HttpClient = inject(HttpClient);
 
   private readonly controller = environment.apiUrl + environment.apiVersion + '/drivers';
   _notifyChangeSignal = signal<number>(0);
   notifyChangeSignal = this._notifyChangeSignal.asReadonly();
-
-  constructor(
-    private http: HttpClient,
-  ) { }
 
   notifyChange(): void {
     this._notifyChangeSignal.set(Date.now());
