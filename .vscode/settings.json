@@ -11,6 +11,7 @@
         "VehicleForm",
         "Client",
         "Maps",
-        "Trip"
+        "Trip",
+        "TokenServices"
     ]
 }

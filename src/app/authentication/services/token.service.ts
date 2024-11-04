@@ -10,11 +10,11 @@ export class TokenService {
   constructor() { }
 
   get token(): string {
-    return localStorage.getItem(constants.KEY_TOKEN) || '';
+    return localStorage.getItem(constants.KEY_TOKEN) ?? '';
   }
 
   get refreshToken(): string {
-    return localStorage.getItem(constants.KEY_REFRESH_TOKEN) || '';
+    return localStorage.getItem(constants.KEY_REFRESH_TOKEN) ?? '';
   }
 
   get tokenData(): TokenData {
