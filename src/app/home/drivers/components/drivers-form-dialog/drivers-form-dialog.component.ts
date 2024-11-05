@@ -1,4 +1,4 @@
-import { Component, inject, input, model, signal } from '@angular/core';
+import { Component, inject, input, model, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Driver } from '../../model/driver.types';
 import { DialogData } from '../../model/dialog.data';
@@ -32,7 +32,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './drivers-form-dialog.component.html',
   styleUrl: './drivers-form-dialog.component.css'
 })
-export class DriversFormDialogComponent {
+export class DriversFormDialogComponent implements OnInit {
 
 
   readonly dialogRef: MatDialogRef<DriversFormDialogComponent> = inject(MatDialogRef<DriversFormDialogComponent>);
@@ -56,13 +56,16 @@ export class DriversFormDialogComponent {
   });
 
 
-  constructor() {
+
+  ngOnInit(): void {
     if (this.action === DialogAction.OBSERVE) {
       this.formDriver.disable();
+      return;
     }
 
     if (this.action === DialogAction.EDIT) {
       this.formDriver.removeControl('birthdate' as never);
+      return;
     }
   }
 
