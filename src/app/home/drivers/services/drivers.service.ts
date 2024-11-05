@@ -7,20 +7,14 @@ import { environment } from '../../../../environments/environment';
 import { PaginationRequest } from '../../../shared/pagination/model/pagination.request';
 import { generatePaginationQuery } from '../../../utils/generate-pagination-query';
 import { Driver, UpdateDriverDto, CreateDriverDto } from '../model/driver.types';
+import { PaginationServices } from '../../../shared/pagination/interfaces/PaginationServices';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DriversService implements IPaginationServices {
+export class DriversService extends PaginationServices {
   private readonly http: HttpClient = inject(HttpClient);
-
   private readonly controller = environment.apiUrl + environment.apiVersion + '/drivers';
-  _notifyChangeSignal = signal<number>(0);
-  notifyChangeSignal = this._notifyChangeSignal.asReadonly();
-
-  notifyChange(): void {
-    this._notifyChangeSignal.set(Date.now());
-  }
 
   getAllPaginated<Driver>(
     paginationRequest: PaginationRequest

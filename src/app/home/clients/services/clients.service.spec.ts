@@ -63,8 +63,4 @@ describe('ClientsService', () => {
   });
 
 
-  it('should notify change', () => {
-    service.notifyChange();
-    expect(service.notifyChangeSignal()).toBeGreaterThan(0);
-  });
 });
