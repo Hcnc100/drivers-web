@@ -12,6 +12,7 @@
         "Client",
         "Maps",
         "Trip",
-        "TokenServices"
+        "TokenServices",
+        "RequestyTrip"
     ]
 }

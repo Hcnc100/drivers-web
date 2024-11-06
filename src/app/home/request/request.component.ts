@@ -36,9 +36,7 @@ export class RequestComponent {
       name: 'Ver',
       icon: 'visibility',
       description: 'Ver solicitud',
-      action: (data: RequestTrip) => {
-        this.showRequest(data);
-      }
+      action: (data: RequestTrip) => this.showRequest(data)
     }
   ];
 
@@ -48,7 +46,9 @@ export class RequestComponent {
       name: 'Agregar',
       icon: 'add',
       description: 'Agregar solicitud',
-      action: () => { }
+      action: () => {
+        throw new Error('Not implemented');
+      }
     }
   ];
 

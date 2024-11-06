@@ -11,12 +11,12 @@ export interface Address {
     id: number;
     fullAddress?: string;
     shortAddress?: string;
-    street_number?: null;
-    street?: null;
-    city?: null;
-    colony?: null;
-    state?: null;
-    cp?: null;
+    street_number?: string;
+    street?: string;
+    city?: string;
+    colony?: string;
+    state?: string;
+    cp?: string;
     location?: Location;
 }
 
