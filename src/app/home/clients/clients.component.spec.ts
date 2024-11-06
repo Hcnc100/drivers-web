@@ -34,7 +34,7 @@ describe('ClientsComponent', () => {
 
   beforeEach(async () => {
 
-    clientService = jasmine.createSpyObj<ClientsService>('ClientsService', ['getAllPaginated', 'notifyChange']);
+    clientService = jasmine.createSpyObj<ClientsService>('ClientsService', ['getAllPaginated']);
 
     await TestBed.configureTestingModule({
       imports: [ClientsComponent],

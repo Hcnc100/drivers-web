@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { IPaginationServices } from '../../../shared/pagination/interfaces/IPaginationServices';
 import { Subject, Observable } from 'rxjs';
 import { PaginationRequest } from '../../../shared/pagination/model/pagination.request';
@@ -7,26 +7,17 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { generatePaginationQuery } from '../../../utils/generate-pagination-query';
 import { Trip } from '../model/Trip';
+import { PaginationServices } from '../../../shared/pagination/interfaces/PaginationServices';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TripService implements IPaginationServices {
-
+export class TripService extends PaginationServices {
+  private readonly http: HttpClient = inject(HttpClient);
   private readonly controller = environment.apiUrl + environment.apiVersion + '/trips';
-
-  _notifyChangeSignal = signal<number>(0);
-  notifyChangeSignal = this._notifyChangeSignal.asReadonly();
-
-  constructor(
-    private readonly http: HttpClient
-  ) { }
 
   getAllPaginated<Trip>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Trip>> {
     const query = generatePaginationQuery(paginationRequest);
     return this.http.get<PaginatedResult<Trip>>(`${this.controller}?${query}`);
-  }
-  notifyChange(): void {
-    this._notifyChangeSignal.set(Date.now());
   }
 }

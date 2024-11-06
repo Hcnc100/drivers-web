@@ -8,11 +8,25 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Address, RequestTrip } from './model/request';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestDialogComponent } from './components/request-dialog/request-dialog.component';
+import { RequestService } from './services/request.service';
+import { PaginatedResult } from '../../shared/pagination/model/pagination.result';
+import { of } from 'rxjs';
 
 
 const request: RequestTrip = {
   id: 1,
 } as RequestTrip;
+
+const paginationResult: PaginatedResult<RequestTrip> = {
+  pagination: {
+    currentPage: 1,
+    totalItems: 1,
+    totalPages: 1,
+    pageSize: 1
+  },
+  result: []
+};
+
 
 
 describe('RequestComponent', () => {
@@ -20,11 +34,13 @@ describe('RequestComponent', () => {
   let fixture: ComponentFixture<RequestComponent>;
   let toastsServiceSpy: jasmine.SpyObj<ToastService>;
   let dialogSpy: jasmine.SpyObj<MatDialog>;
+  let requestServiceSpy: jasmine.SpyObj<RequestService>;
 
   beforeEach(async () => {
 
     toastsServiceSpy = jasmine.createSpyObj<ToastService>('ToastService', ['showSuccess', 'showError']);
     dialogSpy = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
+    requestServiceSpy = jasmine.createSpyObj<RequestService>('RequestService', ['getAllPaginated']);
 
     await TestBed.configureTestingModule({
       imports: [RequestComponent],
@@ -33,12 +49,15 @@ describe('RequestComponent', () => {
         provideHttpClientTesting(),
         provideNoopAnimations(),
         { provide: ToastService, useValue: toastsServiceSpy },
-        { provide: MatDialog, useValue: dialogSpy }
+        { provide: MatDialog, useValue: dialogSpy },
+        { provide: RequestService, useValue: requestServiceSpy }
       ]
     })
       .compileComponents();
 
     spyOn(console, 'log');
+
+    requestServiceSpy.getAllPaginated.and.returnValue(of(paginationResult));
 
     fixture = TestBed.createComponent(RequestComponent);
     component = fixture.componentInstance;
