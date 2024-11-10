@@ -13,6 +13,7 @@
         "Maps",
         "Trip",
         "TokenServices",
-        "RequestyTrip"
+        "RequestyTrip",
+        "Keystore"
     ]
 }

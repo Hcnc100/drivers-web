@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -8,15 +8,13 @@ import { KeyResponse } from '../models/key.response';
   providedIn: 'root'
 })
 export class KeystoreService {
+  readonly http = inject(HttpClient);
 
   private readonly controller = environment.apiUrl + environment.apiVersion + '/keystore';
 
   private _mapsKey?: string;
   private _mapId?: string;
 
-  constructor(
-    private readonly http: HttpClient,
-  ) { }
 
   async getMapsKey() {
 
@@ -27,7 +25,6 @@ export class KeystoreService {
       this._mapsKey = key.key;
       return this._mapsKey;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -40,7 +37,6 @@ export class KeystoreService {
       this._mapId = key.key;
       return this._mapId;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
