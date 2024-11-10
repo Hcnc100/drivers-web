@@ -14,6 +14,7 @@ import { DialogService } from '../../shared/simple-dialog/services/dialog.servic
 import { ErrorForm } from '../../shared/model/ErrorForm';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CustomInputComponent } from '../../shared/custom-input/custom-input.component';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    CommonModule
+    CommonModule,
+    CustomInputComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -110,6 +112,7 @@ export class LoginComponent {
 
   togglePassword(event: MouseEvent) {
     event.preventDefault();
+    event.stopPropagation();
     this._isPasswordVisible.update(value => !value);
   }
 

@@ -114,7 +114,6 @@ export class VehicleFormComponent implements OnInit, OnDestroy {
   save() {
     if (this.vehicleForm.valid) {
       const vehicleFrom = <Vehicle>this.vehicleForm.value;
-      console.log(vehicleFrom);
       this.dialogRef.close(vehicleFrom);
     }
   }

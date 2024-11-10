@@ -61,6 +61,7 @@ describe('PaginationGridComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(PaginationGridComponent);
+    fixture.componentRef.setInput('search', () => { });
     component = fixture.componentInstance;
     component.paginationServices = mockPaginationService;
     component.tableColumns = columsName;

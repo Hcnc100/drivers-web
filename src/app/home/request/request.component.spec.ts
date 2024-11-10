@@ -40,7 +40,7 @@ describe('RequestComponent', () => {
 
     toastsServiceSpy = jasmine.createSpyObj<ToastService>('ToastService', ['showSuccess', 'showError']);
     dialogSpy = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
-    requestServiceSpy = jasmine.createSpyObj<RequestService>('RequestService', ['getAllPaginated']);
+    requestServiceSpy = jasmine.createSpyObj<RequestService>('RequestService', ['getAllPaginated', 'notifyChangeSignal']);
 
     await TestBed.configureTestingModule({
       imports: [RequestComponent],
@@ -55,7 +55,6 @@ describe('RequestComponent', () => {
     })
       .compileComponents();
 
-    spyOn(console, 'log');
 
     requestServiceSpy.getAllPaginated.and.returnValue(of(paginationResult));
 

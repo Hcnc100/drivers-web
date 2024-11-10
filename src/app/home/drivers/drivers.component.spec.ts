@@ -43,7 +43,7 @@ describe('DriversComponent', () => {
   beforeEach(async () => {
     toastsServiceSpy = jasmine.createSpyObj<ToastService>('ToastService', ['showSuccess', 'showError']);
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    driversServiceSpy = jasmine.createSpyObj<DriversService>('DriversService', ['createDriver', 'updateDriver', 'deleteDriver', 'getAllPaginated']);
+    driversServiceSpy = jasmine.createSpyObj<DriversService>('DriversService', ['createDriver', 'updateDriver', 'deleteDriver', 'getAllPaginated', 'notifyChangeSignal']);
 
     await TestBed.configureTestingModule({
       imports: [DriversComponent],

@@ -43,7 +43,7 @@ describe('TripsComponent', () => {
 
   beforeEach(async () => {
 
-    tripsServiceSpy = jasmine.createSpyObj<TripService>('TripService', ['getAllPaginated']);
+    tripsServiceSpy = jasmine.createSpyObj<TripService>('TripService', ['getAllPaginated', 'notifyChangeSignal']);
     matDialogSpy = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
 
     await TestBed.configureTestingModule({

@@ -1,4 +1,4 @@
-import { Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { IPaginationServices } from '../../../../shared/pagination/interfaces/IPaginationServices';
 import { BehaviorSubject, map, Observable, single, Subject, tap } from 'rxjs';
 import { PaginationRequest } from '../../../../shared/pagination/model/pagination.request';
@@ -10,26 +10,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Make } from '../../model/make';
 import { Model } from '../../model/model';
 import { Color } from '../../model/Color';
+import { PaginationServices } from '../../../../shared/pagination/interfaces/PaginationServices';
 
 @Injectable({
   providedIn: 'root'
 })
-export class VehiclesService implements IPaginationServices {
-
-
+export class VehiclesService extends PaginationServices {
+  private readonly http = inject(HttpClient);
 
   private readonly controller = environment.apiUrl + environment.apiVersion + '/vehicles';
-  _notifyChangeSignal = signal<number>(0);
-  notifyChangeSignal = this._notifyChangeSignal.asReadonly();
 
-  constructor(
-    private http: HttpClient
-  ) { }
-
-
-  notifyChange(): void {
-    this._notifyChangeSignal.set(Date.now());
-  }
   getAllPaginated<Vehicle>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Vehicle>> {
     const query = generatePaginationQuery(paginationRequest);
     return this.http.get<PaginatedResult<Vehicle>>(`${this.controller}?${query}`);

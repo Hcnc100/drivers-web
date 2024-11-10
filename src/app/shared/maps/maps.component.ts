@@ -69,7 +69,7 @@ export class MapsComponent implements OnInit {
   private setupOptions(
     mapId: string,
   ): void {
-    console.log('mapId', mapId);
+
     this._options.set({
       mapId: mapId,
       streetViewControl: false,
