@@ -21,4 +21,23 @@ describe('MapsLoaderService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should if has promise in cache', async () => {
+    const apiKey = '123';
+    keystoreServiceSpy.getMapsKey.and.returnValue(Promise.resolve(apiKey));
+
+
+    service["promise"] = Promise.resolve('google maps api loaded');
+
+    const result = await service.load();
+    expect(result).toBe('google maps api loaded');
+  });
+
+  it('should load google maps api', async () => {
+    const apiKey = '123';
+    keystoreServiceSpy.getMapsKey.and.returnValue(Promise.resolve(apiKey));
+
+    const result = await service.load();
+    expect(result).toBe('google maps api loaded');
+  });
 });

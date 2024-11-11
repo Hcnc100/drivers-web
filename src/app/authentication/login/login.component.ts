@@ -14,7 +14,7 @@ import { DialogService } from '../../shared/simple-dialog/services/dialog.servic
 import { ErrorForm } from '../../shared/model/ErrorForm';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CustomInputComponent } from '../../shared/custom-input/custom-input.component';
+import { SimpleInputComponent } from '../../shared/custom-inputs/simple-input/simple-input.component';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +27,7 @@ import { CustomInputComponent } from '../../shared/custom-input/custom-input.com
     MatIconModule,
     MatProgressSpinnerModule,
     CommonModule,
-    CustomInputComponent
+    SimpleInputComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

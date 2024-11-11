@@ -1,0 +1,27 @@
+<mat-form-field class="mat-form-field">
+    <!-- * label -->
+    <mat-label>{{label()}}</mat-label>
+    <!-- * mat-select -->
+    <mat-select [formControl]="control()" [required]="isRequired()">
+        @for(option of this.options();track option){
+        <!-- * mat-options -->
+        <mat-option [value]="option.id">
+            @if (this.itemTemplate()) {
+            <ng-container *ngTemplateOutlet="this.itemTemplate()!; context: {$implicit: option}" />
+            }@else {
+            {{option.value}}
+            }
+        </mat-option>
+        }
+    </mat-select>
+    <!-- * mat-error -->
+    @if (this.control().invalid && (this.control().dirty || this.control().touched)){
+    <mat-error>
+        @for (error of this.validators(); track error) {
+        @if (this.control().hasError(error.type)) {
+        {{error.message}}
+        }
+        }
+    </mat-error>
+    }
+</mat-form-field>

@@ -14,38 +14,16 @@
     </h1>
     <mat-dialog-content class="mat-typography">
         <div class="grid-form-driver">
-            <mat-form-field>
-                <mat-label>Marca</mat-label>
-                <input matInput formControlName="make" name="make" maxlength="50" [matAutocomplete]="auto1">
-                <mat-autocomplete #auto1="matAutocomplete">
-                    @for (option of this.makeOptions(); track option) {
-                    <mat-option [value]="option.make">{{option.make}}</mat-option>
-                    }
-                </mat-autocomplete>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Modelo</mat-label>
-                <input matInput formControlName="model" name="model" maxlength="50" [matAutocomplete]="auto2">
-                <mat-autocomplete #auto2="matAutocomplete">
-                    @for (option of this.modelOptions(); track option) {
-                    <mat-option [value]="option.model">{{option.model}}</mat-option>
-                    }
-                </mat-autocomplete>
+            <app-simple-input [control]="vehicleForm.controls.make" [label]="'Marca'" [name]="'make'"
+                [isRequired]="true" [maxLength]="50" [options]="makeOptions()" />
 
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Color</mat-label>
-                <mat-select formControlName="color" name="color">
-                    @for(color of this.colors();track color){
-                    <mat-option [value]="color.color">
-                        <div class="option-container">
-                            <div class="color-preview" [style.background]="color.hex"></div>
-                            <span>{{ color.color }}</span>
-                        </div>
-                    </mat-option>
-                    }
-                </mat-select>
-            </mat-form-field>
+            <app-simple-input [control]="vehicleForm.controls.model" [label]="'Modelo'" [name]="'model'"
+                [isRequired]="true" [maxLength]="50" [options]="modelOptions()" />
+
+            <app-options-input [control]="vehicleForm.controls.color" [label]="'Color'" [options]="colors()"
+                [itemTemplate]="itemTemplate" />
+
+
             <mat-form-field>
                 <mat-label>Placas</mat-label>
                 <input matInput formControlName="plates" name="plates" maxlength="20">
@@ -71,3 +49,11 @@
         <button mat-button type="submit">Save</button>
     </mat-dialog-actions>
 </form>
+
+
+<ng-template #itemTemplate let-item>
+    <div class="option-container">
+        <div class="color-preview" [style.background]="item.data.hex"></div>
+        <span>{{ item.value}}</span>
+    </div>
+</ng-template>

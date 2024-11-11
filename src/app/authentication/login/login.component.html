@@ -2,23 +2,19 @@
     <form [formGroup]="formLogin" class="form-card" (ngSubmit)="login()">
         <h1>Login</h1>
 
-        <app-custom-input [control]="formLogin.controls.email" [label]="'Email'" [placeholder]="'example@emial.com'"
+        <app-simple-input [control]="formLogin.controls.email" [label]="'Email'" [placeholder]="'example@emial.com'"
             [isRequired]="true" [maxLength]="50" [type]="'email'" [validators]="validators.email"
-            [isEnable]="!isLoading()" 
-            class="container-field"
-            />
+            [isEnable]="!isLoading()" class="container-field" [name]="'email'" />
 
-        <app-custom-input
-            class="container-field"
-        [isEnable]="!isLoading()" [control]="formLogin.controls.password" [label]="'Password'"
-            [placeholder]="'********'" [isRequired]="true" [maxLength]="50"
-            [type]="isPasswordVisible() ? 'text' : 'password'" [validators]="validators.password">
+        <app-simple-input class="container-field" [isEnable]="!isLoading()" [control]="formLogin.controls.password"
+            [label]="'Password'" [placeholder]="'********'" [isRequired]="true" [maxLength]="50"
+            [type]="isPasswordVisible() ? 'text' : 'password'" [validators]="validators.password" [name]="'password'">
 
             <button mat-icon-button matSuffix (click)="togglePassword($event)" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="isPasswordVisible()" [disabled]="isLoading()">
                 <mat-icon>{{ isPasswordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
-        </app-custom-input>
+        </app-simple-input>
 
 
         @if (isLoading()){

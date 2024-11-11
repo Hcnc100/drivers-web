@@ -1,23 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CustomInputComponent } from './custom-input.component';
 import { FormControl } from '@angular/forms';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { SimpleInputComponent } from './simple-input.component';
 
-describe('CustomInputComponent', () => {
-  let component: CustomInputComponent;
-  let fixture: ComponentFixture<CustomInputComponent>;
+describe('SimpleInputComponent', () => {
+  let component: SimpleInputComponent;
+  let fixture: ComponentFixture<SimpleInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CustomInputComponent],
+      imports: [SimpleInputComponent],
       providers: [
         provideNoopAnimations(),
       ],
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(CustomInputComponent);
+    fixture = TestBed.createComponent(SimpleInputComponent);
     fixture.componentRef.setInput('control', new FormControl());
     component = fixture.componentInstance;
     fixture.detectChanges();

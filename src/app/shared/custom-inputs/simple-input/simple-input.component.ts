@@ -1,15 +1,17 @@
 import { Component, effect, input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ErrorForm } from '../model/ErrorForm';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ErrorForm } from '../../model/ErrorForm';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AutoCompleteValue } from '../../model/AutoCompleteValue';
 
 
 @Component({
-  selector: 'app-custom-input',
+  selector: 'app-simple-input',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -18,11 +20,12 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
     MatIconModule,
     CommonModule,
+    MatAutocompleteModule
   ],
-  templateUrl: './custom-input.component.html',
-  styleUrl: './custom-input.component.css'
+  templateUrl: './simple-input.component.html',
+  styleUrl: './simple-input.component.css'
 })
-export class CustomInputComponent {
+export class SimpleInputComponent {
 
   readonly control = input.required<FormControl>();
   readonly placeholder = input<string>('');
@@ -32,6 +35,9 @@ export class CustomInputComponent {
   readonly maxLength = input<number>(0);
   readonly validators = input<ErrorForm[]>();
   readonly isEnable = input<boolean>(true);
+  readonly options = input<AutoCompleteValue[]>([]);
+  readonly name = input.required<string>();
+  readonly displayWith = input<(value: AutoCompleteValue) => string>();
 
   constructor() {
     effect(() => {
@@ -41,5 +47,13 @@ export class CustomInputComponent {
         this.control().disable();
       }
     });
+  }
+
+  showDisplayWith(value?: AutoCompleteValue): string {
+    if (!value) {
+      return '';
+    }
+    const displayWith = this.displayWith();
+    return displayWith ? displayWith(value) : value.value;
   }
 }

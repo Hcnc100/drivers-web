@@ -6,11 +6,10 @@ import { KeystoreService } from '../../kestore/services/keystore.service';
 })
 export class MapsLoaderService {
 
+  private readonly keystoreService: KeystoreService = inject(KeystoreService);
+
   private promise?: Promise<any>;
 
-  constructor(
-    private readonly keystoreService: KeystoreService
-  ) { }
 
   public async load() {
     const apiKey = await this.keystoreService.getMapsKey();

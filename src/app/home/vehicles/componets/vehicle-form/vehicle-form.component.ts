@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
-import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Subscription, map } from 'rxjs';
 import { VehiclesService } from '../../services/services/vehicles.service';
 import { Make } from '../../model/make';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -17,6 +17,10 @@ import { PaginationRequest } from '../../../../shared/pagination/model/paginatio
 import { Model } from '../../model/model';
 import { Color } from '../../model/Color';
 import { MatSelectModule } from '@angular/material/select';
+import { SimpleInputComponent } from "../../../../shared/custom-inputs/simple-input/simple-input.component";
+import { AutoCompleteValue } from '../../../../shared/model/AutoCompleteValue';
+import { OptionsInputComponent } from "../../../../shared/custom-inputs/options-input/options-input.component";
+import { DropDownOption } from '../../../../shared/model/DropDownOption';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -31,6 +35,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatRadioModule,
     MatAutocompleteModule,
     MatSelectModule,
+    SimpleInputComponent,
+    OptionsInputComponent
   ],
   templateUrl: './vehicle-form.component.html',
   styleUrl: './vehicle-form.component.css'
@@ -59,9 +65,9 @@ export class VehicleFormComponent implements OnInit, OnDestroy {
     isRotulated: new FormControl(this.vehicle?.isRotulated, [Validators.required])
   });
 
-  readonly makeOptions = signal<Make[]>([])
-  readonly modelOptions = signal<Model[]>([])
-  readonly colors = signal<Color[]>([])
+  readonly makeOptions = signal<AutoCompleteValue[]>([])
+  readonly modelOptions = signal<AutoCompleteValue[]>([])
+  readonly colors = signal<DropDownOption[]>([])
 
 
 
@@ -83,7 +89,13 @@ export class VehicleFormComponent implements OnInit, OnDestroy {
         if (value) {
           const request = this.getPaginationRequest(value);
           this.vehicleService.getListMake(request).subscribe({
-            next: makes => this.makeOptions.set(makes)
+            next: makes => {
+              const map = makes.map(make => <AutoCompleteValue>{
+                id: make.id,
+                value: make.make
+              });
+              this.makeOptions.set(map);
+            }
           });
         }
       });
@@ -99,7 +111,13 @@ export class VehicleFormComponent implements OnInit, OnDestroy {
           const make = this.vehicleForm.controls.make.value ?? '';
           const request = this.getPaginationRequest(value);
           this.vehicleService.getListModel(make, request).subscribe({
-            next: models => this.modelOptions.set(models)
+            next: models => {
+              const map = models.map(model => <AutoCompleteValue>{
+                id: model.id,
+                value: model.model
+              });
+              this.modelOptions.set(map);
+            }
           });
         }
       });
@@ -107,7 +125,14 @@ export class VehicleFormComponent implements OnInit, OnDestroy {
 
   loadColors() {
     this.vehicleService.getListColor().subscribe({
-      next: colors => this.colors.set(colors)
+      next: colors => {
+        const map = colors.map(color => <DropDownOption>{
+          id: color.id,
+          value: color.color,
+          data: color
+        });
+        this.colors.set(map);
+      }
     });
   }
 
