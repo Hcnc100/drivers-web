@@ -41,7 +41,7 @@ describe('TripService', () => {
         expect(response).toEqual(paginationResult);
         done();
       });
-    const req = httpController.expectOne(service['controller'] + "?");
+    const req = httpController.expectOne(service['controller']);
     req.flush(paginationResult);
   });
 });

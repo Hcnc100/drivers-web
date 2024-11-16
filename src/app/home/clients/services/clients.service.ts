@@ -19,7 +19,7 @@ export class ClientsService extends PaginationServices {
 
   getAllPaginated<Client>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Client>> {
     const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Client>>(`${this.controller}?${query}`);
+    return this.http.get<PaginatedResult<Client>>(`${this.controller}${query}`);
   }
 
 }

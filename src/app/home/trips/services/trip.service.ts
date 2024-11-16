@@ -18,6 +18,6 @@ export class TripService extends PaginationServices {
 
   getAllPaginated<Trip>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Trip>> {
     const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Trip>>(`${this.controller}?${query}`);
+    return this.http.get<PaginatedResult<Trip>>(`${this.controller}${query}`);
   }
 }

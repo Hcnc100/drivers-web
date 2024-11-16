@@ -67,7 +67,7 @@ describe('VehiclesService', () => {
       done();
     });
 
-    const req = httpTestingController.expectOne(`${service['controller']}?`);
+    const req = httpTestingController.expectOne(`${service['controller']}`);
     expect(req.request.method).toEqual('GET');
     req.flush(paginationResult);
   });

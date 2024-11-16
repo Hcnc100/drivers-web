@@ -48,7 +48,7 @@ describe('RequestService', () => {
       }
     );
 
-    const req = controller.expectOne(`${service['controller']}?`);
+    const req = controller.expectOne(`${service['controller']}`);
     req.flush(paginationResult);
   });
 });

@@ -22,7 +22,7 @@ export class VehiclesService extends PaginationServices {
 
   getAllPaginated<Vehicle>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Vehicle>> {
     const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Vehicle>>(`${this.controller}?${query}`);
+    return this.http.get<PaginatedResult<Vehicle>>(`${this.controller}${query}`);
   }
 
 

@@ -74,7 +74,7 @@ describe('DriversService', () => {
 
     const query = generatePaginationQuery(paginationRequest);
 
-    const req = httpController.expectOne(`${service['controller']}?${query}`);
+    const req = httpController.expectOne(`${service['controller']}${query}`);
     req.flush(paginationResponse);
   });
 

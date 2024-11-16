@@ -21,7 +21,7 @@ export class DriversService extends PaginationServices {
   ): Observable<PaginatedResult<Driver>> {
 
     const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Driver>>(`${this.controller}?${query}`);
+    return this.http.get<PaginatedResult<Driver>>(`${this.controller}${query}`);
   }
 
   private driverToFormData(driver: CreateDriverDto | UpdateDriverDto): FormData {
