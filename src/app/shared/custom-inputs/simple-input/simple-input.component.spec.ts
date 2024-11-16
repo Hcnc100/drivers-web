@@ -19,6 +19,7 @@ describe('SimpleInputComponent', () => {
 
     fixture = TestBed.createComponent(SimpleInputComponent);
     fixture.componentRef.setInput('control', new FormControl());
+    fixture.componentRef.setInput('name', 'name');
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

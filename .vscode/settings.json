@@ -15,6 +15,7 @@
         "TokenServices",
         "RequestyTrip",
         "Keystore",
-        "Share"
+        "Share",
+        "CustomInputs"
     ]
 }

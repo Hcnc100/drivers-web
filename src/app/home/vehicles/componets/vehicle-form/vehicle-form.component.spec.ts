@@ -182,6 +182,7 @@ describe('VehicleFormComponent', () => {
   it('should create with form disable', () => {
 
     expect(component).toBeTruthy();
+    component.ngOnInit();
     expect(component.vehicleForm.disabled).toBeTrue();
   });
 
