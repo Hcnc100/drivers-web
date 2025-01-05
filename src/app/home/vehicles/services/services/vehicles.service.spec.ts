@@ -78,7 +78,7 @@ describe('VehiclesService', () => {
       done();
     });
 
-    const req = httpTestingController.expectOne(`${service['controller']}/catalog/makes?`);
+    const req = httpTestingController.expectOne(`${service['controller']}/catalog/makes`);
     expect(req.request.method).toEqual('GET');
     req.flush({ result: makeResult });
   });
@@ -89,7 +89,7 @@ describe('VehiclesService', () => {
       done();
     });
 
-    const req = httpTestingController.expectOne(`${service['controller']}/catalog/makes/make/models?`);
+    const req = httpTestingController.expectOne(`${service['controller']}/catalog/makes/make/models`);
     expect(req.request.method).toEqual('GET');
     req.flush({ result: modelResult });
   });

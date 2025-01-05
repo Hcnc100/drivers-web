@@ -57,7 +57,7 @@ describe('ClientsService', () => {
 
     const query = generatePaginationQuery(paginationRequest);
 
-    const req = httpClient.expectOne(`${service['controller']}${query}`);
+    const req = httpClient.expectOne(`${service['controller']}?${query}`);
     expect(req.request.method).toBe('GET');
     req.flush(paginationResponseClient);
   });
