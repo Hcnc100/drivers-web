@@ -18,8 +18,8 @@ export class ClientsService extends PaginationServices {
   private readonly controller = environment.apiUrl + environment.apiVersion + '/client';
 
   getAllPaginated<Client>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Client>> {
-    const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Client>>(`${this.controller}${query}`);
+    const params = generatePaginationQuery(paginationRequest);
+    return this.http.get<PaginatedResult<Client>>(this.controller, { params });
   }
 
 }

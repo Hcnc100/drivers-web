@@ -1,22 +1,24 @@
+import { HttpParams } from "@angular/common/http";
 import { PaginationRequest } from "../shared/pagination/model/pagination.request";
-export const generatePaginationQuery = (paginationRequest: PaginationRequest): string => {
-    const queryParts: string[] = [];
+export const generatePaginationQuery = (paginationRequest: PaginationRequest): HttpParams => {
+
+    let query = new HttpParams();
 
     if (paginationRequest.page) {
-        queryParts.push(`page=${paginationRequest.page}`);
+        query = query.set('page', paginationRequest.page.toString());
     }
     if (paginationRequest.limit) {
-        queryParts.push(`limit=${paginationRequest.limit}`);
+        query = query.set('limit', paginationRequest.limit.toString());
     }
     if (paginationRequest.search) {
-        queryParts.push(`search=${paginationRequest.search}`);
+        query = query.set('search', paginationRequest.search);
     }
     if (paginationRequest.sort) {
-        queryParts.push(`sort=${paginationRequest.sort}`);
+        query = query.set('sort', paginationRequest.sort);
     }
     if (paginationRequest.order) {
-        queryParts.push(`order=${paginationRequest.order}`);
+        query = query.set('order', paginationRequest.order);
     }
 
-    return queryParts.length > 0 ? `?${queryParts.join('&')}` : '';
+    return query;
 };

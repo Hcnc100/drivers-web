@@ -18,7 +18,7 @@ export class RequestService extends PaginationServices {
 
 
   getAllPaginated<RequestTrip>(paginationRequest: PaginationRequest): Observable<PaginatedResult<RequestTrip>> {
-    const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<RequestTrip>>(`${this.controller}${query}`);
+    const params = generatePaginationQuery(paginationRequest);
+    return this.http.get<PaginatedResult<RequestTrip>>(this.controller, { params });
   }
 }

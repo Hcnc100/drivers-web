@@ -17,7 +17,7 @@ export class TripService extends PaginationServices {
   private readonly controller = environment.apiUrl + environment.apiVersion + '/trips';
 
   getAllPaginated<Trip>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Trip>> {
-    const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Trip>>(`${this.controller}${query}`);
+    const params = generatePaginationQuery(paginationRequest);
+    return this.http.get<PaginatedResult<Trip>>(this.controller, { params });
   }
 }

@@ -21,21 +21,26 @@ export class VehiclesService extends PaginationServices {
   private readonly controller = environment.apiUrl + environment.apiVersion + '/vehicles';
 
   getAllPaginated<Vehicle>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Vehicle>> {
-    const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Vehicle>>(`${this.controller}${query}`);
+    const params = generatePaginationQuery(paginationRequest);
+    return this.http.get<PaginatedResult<Vehicle>>(this.controller, { params });
   }
 
 
   getListMake(paginationRequest: PaginationRequest): Observable<Make[]> {
-    const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Make>>(`${this.controller}/catalog/makes?${query}`).pipe(
+    const params = generatePaginationQuery(paginationRequest);
+    return this.http.get<PaginatedResult<Make>>(
+      `${this.controller}/catalog/makes`, { params }
+    ).pipe(
       map((result: PaginatedResult<Make>) => result.result)
     );
   }
 
   getListModel(make: string, paginationRequest: PaginationRequest): Observable<Model[]> {
-    const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Model>>(`${this.controller}/catalog/makes/${make}/models?${query}`).pipe(
+    const params = generatePaginationQuery(paginationRequest);
+    return this.http.get<PaginatedResult<Model>>(
+      `${this.controller}/catalog/makes/${make}/models`,
+      { params }
+    ).pipe(
       map((result: PaginatedResult<Model>) => result.result)
     );
   }
