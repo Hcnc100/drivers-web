@@ -10,13 +10,16 @@ import { LoginResponse } from '../model/LoginResponse';
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly tokenService: TokenService = inject(TokenService);
   private readonly controller = environment.apiUrl + environment.apiVersion + '/auth';
-  constructor(
-    private http: HttpClient,
-    private tokenService: TokenService
-  ) { }
+
+  readonly loginPath = `${this.controller}/login`;
+  readonly refreshTokenPath = `${this.controller}/refresh`;
+
+
   login(LoginDTO: LoginDTO) {
-    return this.http.post<LoginResponse>(`${this.controller}/login`, LoginDTO).pipe(
+    return this.http.post<LoginResponse>(this.loginPath, LoginDTO).pipe(
       tap((response: LoginResponse) => {
         const tokenData = {
           token: response.token,
@@ -29,7 +32,7 @@ export class AuthService {
 
   refreshToken() {
     const tokenData = this.tokenService.tokenData;
-    return this.http.post<LoginResponse>(`${this.controller}/refresh`, tokenData).pipe(
+    return this.http.post<LoginResponse>(this.refreshTokenPath, tokenData).pipe(
       tap((response: LoginResponse) => {
         const tokenData = {
           token: response.token,

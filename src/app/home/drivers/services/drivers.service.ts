@@ -1,4 +1,4 @@
-import { Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { IPaginationServices } from '../../../shared/pagination/interfaces/IPaginationServices';
 import { BehaviorSubject, Observable, pipe, Subject, tap } from 'rxjs';
 import { PaginatedResult } from '../../../shared/pagination/model/pagination.result';
@@ -7,29 +7,21 @@ import { environment } from '../../../../environments/environment';
 import { PaginationRequest } from '../../../shared/pagination/model/pagination.request';
 import { generatePaginationQuery } from '../../../utils/generate-pagination-query';
 import { Driver, UpdateDriverDto, CreateDriverDto } from '../model/driver.types';
+import { PaginationServices } from '../../../shared/pagination/interfaces/PaginationServices';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DriversService implements IPaginationServices {
-
+export class DriversService extends PaginationServices {
+  private readonly http: HttpClient = inject(HttpClient);
   private readonly controller = environment.apiUrl + environment.apiVersion + '/drivers';
-  notifyChangeSignal: Subject<number> = new Subject<number>();
-
-  constructor(
-    private http: HttpClient,
-  ) { }
-
-  notifyChange(): void {
-    this.notifyChangeSignal.next(Date.now());
-  }
 
   getAllPaginated<Driver>(
     paginationRequest: PaginationRequest
   ): Observable<PaginatedResult<Driver>> {
 
-    const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Driver>>(`${this.controller}?${query}`);
+    const params = generatePaginationQuery(paginationRequest);
+    return this.http.get<PaginatedResult<Driver>>(this.controller, { params });
   }
 
   private driverToFormData(driver: CreateDriverDto | UpdateDriverDto): FormData {

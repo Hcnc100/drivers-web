@@ -10,8 +10,8 @@ describe('SelectProfilePictureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SelectProfilePictureComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(SelectProfilePictureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -19,5 +19,39 @@ describe('SelectProfilePictureComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should trigger file input', () => {
+    const event = new Event('click');
+    spyOn(event, 'preventDefault');
+
+    component.triggerFileInput(event);
+
+    expect(event.preventDefault).toHaveBeenCalled();
+  });
+
+
+  it('should set photoFile and photoData when a file is selected', (done) => {
+    const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
+    const event = {
+      target: { files: [file] },
+    } as unknown as Event;
+
+    const fileReaderMock: Partial<FileReader> = {
+      onload: null,
+      readAsDataURL: jasmine.createSpy('readAsDataURL').and.callFake(function (this: FileReader) {
+        if (this.onload) {
+          this.onload({ target: { result: 'data:image/png;base64,dummycontent' } } as ProgressEvent<FileReader>);
+        }
+      }),
+    };
+
+    spyOn(window as any, 'FileReader').and.returnValue(fileReaderMock);
+    component.onFileSelected(event);
+    setTimeout(() => {
+      expect(component.photoFile()).toBe(file);
+      expect(fileReaderMock.readAsDataURL).toHaveBeenCalledWith(file);
+      done();
+    });
   });
 });

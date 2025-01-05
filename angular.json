@@ -82,6 +82,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "codeCoverageExclude": [
+              "**/maps.component.ts"
+            ],
             "codeCoverage": true,
             "polyfills": [
               "zone.js",

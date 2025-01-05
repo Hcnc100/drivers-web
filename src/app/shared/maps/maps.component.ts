@@ -69,7 +69,7 @@ export class MapsComponent implements OnInit {
   private setupOptions(
     mapId: string,
   ): void {
-    console.log('mapId', mapId);
+
     this._options.set({
       mapId: mapId,
       streetViewControl: false,
@@ -113,7 +113,8 @@ export class MapsComponent implements OnInit {
   updateMapCenterPoints(): void {
     const markerBounds = new google.maps.LatLngBounds();
     for (const point of this.listPoints()) {
-      markerBounds.extend(point);
+      const latLng = new google.maps.LatLng(point.lat, point.lng);
+      markerBounds.extend(latLng);
     }
     this.googleMap?.fitBounds(markerBounds);
   }
@@ -121,7 +122,8 @@ export class MapsComponent implements OnInit {
   updatePolylinePoints(): void {
     const markerBounds = new google.maps.LatLngBounds();
     for (const point of this.listPointPolilyne()) {
-      markerBounds.extend(point);
+      const latLng = new google.maps.LatLng(point.lat, point.lng);
+      markerBounds.extend(latLng);
     }
     this.googleMap?.fitBounds(markerBounds);
   }

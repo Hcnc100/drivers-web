@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { IPaginationServices } from '../../../shared/pagination/interfaces/IPaginationServices';
 import { Subject, Observable } from 'rxjs';
 import { PaginationRequest } from '../../../shared/pagination/model/pagination.request';
@@ -7,25 +7,19 @@ import { environment } from '../../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { generatePaginationQuery } from '../../../utils/generate-pagination-query';
 import { Client } from '../model/client';
+import { PaginationServices } from '../../../shared/pagination/interfaces/PaginationServices';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClientsService implements IPaginationServices {
+export class ClientsService extends PaginationServices {
 
+  private readonly http: HttpClient = inject(HttpClient);
   private readonly controller = environment.apiUrl + environment.apiVersion + '/client';
-  notifyChangeSignal: Subject<number> = new Subject<number>();
-
-
-  constructor(
-    private readonly http: HttpClient,
-  ) { }
 
   getAllPaginated<Client>(paginationRequest: PaginationRequest): Observable<PaginatedResult<Client>> {
-    const query = generatePaginationQuery(paginationRequest);
-    return this.http.get<PaginatedResult<Client>>(`${this.controller}?${query}`);
+    const params = generatePaginationQuery(paginationRequest);
+    return this.http.get<PaginatedResult<Client>>(this.controller, { params });
   }
-  notifyChange(): void {
-    this.notifyChangeSignal.next(Date.now());
-  }
+
 }

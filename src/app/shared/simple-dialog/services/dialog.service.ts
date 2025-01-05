@@ -9,7 +9,6 @@ import { SimpleDialogData } from '../model/simple-dialog.data';
 export class DialogService {
   private readonly dialog = inject(MatDialog);
   private dialodRef: any;
-  constructor() { }
 
 
   openDialog(

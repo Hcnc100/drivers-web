@@ -2,13 +2,17 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { TokenService } from '../services/token.service';
 
-export const guardGuard: CanActivateFn = (route, state) => {
+export const canActivateGuardHome: CanActivateFn = async (route, state) => {
   const tokenServices = inject(TokenService);
   const routerService = inject(Router);
   if (tokenServices.token) {
     return true;
   } else {
-    routerService.navigate(['/login']);
+    await routerService.navigate(['/login']);
     return false;
   }
 };
+
+
+
+

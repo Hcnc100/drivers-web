@@ -89,7 +89,7 @@ export class VehiclesComponent {
       next: () => this.toast.showSuccess("Exito", "Vehículo creado correctamente"),
       error: (error) => {
         this.toast.showError("Error", "Error al crear el vehículo")
-        console.error(error);
+
       }
     });
   }
@@ -99,7 +99,7 @@ export class VehiclesComponent {
       next: () => this.toast.showSuccess("Exito", "Vehículo eliminado correctamente"),
       error: (error) => {
         this.toast.showError("Error", "Error al eliminar el vehículo")
-        console.error(error);
+
       }
     });
   }
@@ -109,7 +109,6 @@ export class VehiclesComponent {
       next: () => this.toast.showSuccess("Exito", "Vehículo actualizado correctamente"),
       error: (error) => {
         this.toast.showError("Error", "Error al actualizar el vehículo")
-        console.error(error);
       }
     });
   }

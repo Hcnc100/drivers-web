@@ -21,11 +21,8 @@ import { Trip } from '../../model/Trip';
   templateUrl: './trip-dialog.component.html',
   styleUrl: './trip-dialog.component.css'
 })
-export class TripDialogComponent implements OnInit {
-  ngOnInit(): void {
-    console.log("data", this.dialogData.data);
-    console.log('this.trip', this.trip);
-  }
+export class TripDialogComponent {
+
   readonly dialogRef: MatDialogRef<TripDialogComponent> = inject(MatDialogRef<TripDialogComponent>);
   private readonly dialogData = inject<DialogData<Trip>>(MAT_DIALOG_DATA);
 

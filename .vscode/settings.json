@@ -11,6 +11,12 @@
         "VehicleForm",
         "Client",
         "Maps",
-        "Trip"
+        "Trip",
+        "TokenServices",
+        "RequestyTrip",
+        "Keystore",
+        "Share",
+        "CustomInputs",
+        "ToastServices"
     ]
 }

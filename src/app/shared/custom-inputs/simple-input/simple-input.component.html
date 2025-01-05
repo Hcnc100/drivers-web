@@ -1,0 +1,28 @@
+<mat-form-field class="mat-form-field">
+    <!-- * label -->
+    <mat-label>{{label()}}</mat-label>
+    <!-- * input -->
+    <input matInput [formControl]="control()" [placeholder]="placeholder()" [required]="isRequired()"
+        [maxlength]="maxLength()" [type]="type()" [matAutocomplete]="auto" [name]="name()">
+    <!-- * suffix -->
+    <span matSuffix>
+        <ng-content select="[matSuffix]"></ng-content>
+    </span>
+    <!-- * autocomplete -->
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="showDisplayWith">
+        @for (option of this.options(); track option.id) {
+        <mat-option [value]="option">{{option.value}}</mat-option>
+        }
+    </mat-autocomplete>
+    <!-- * error -->
+    @if (this.control().invalid && (this.control().dirty ||
+    this.control().touched)){
+    <mat-error>
+        @for (error of this.validators(); track $index) {
+        @if (this.control().hasError(error.type)) {
+        {{error.message}}
+        }
+        }
+    </mat-error>
+    }
+</mat-form-field>

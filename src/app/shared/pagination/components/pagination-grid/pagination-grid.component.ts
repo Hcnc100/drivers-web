@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, computed, effect, input, Input, model, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, Injector, input, Input, model, OnDestroy, OnInit, runInInjectionContext, signal, ViewChild } from '@angular/core';
 import { IPaginationServices } from '../../interfaces/IPaginationServices';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
@@ -32,7 +32,9 @@ import { CustomTransformPipe } from '../../../pipes/transform.pipe';
   templateUrl: './pagination-grid.component.html',
   styleUrl: './pagination-grid.component.css'
 })
-export class PaginationGridComponent implements OnInit, OnDestroy {
+export class PaginationGridComponent implements OnInit {
+
+  injector = inject(Injector);
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -55,10 +57,6 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
 
 
   private isFirstLoading = signal(true);
-
-  private search$ = toObservable(this.search);
-  private subscription?: Subscription;
-
 
 
   displayedColumns = computed(() => {
@@ -86,22 +84,19 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
   data: any[] = [];
 
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
-  }
 
   ngOnInit(): void {
 
-    this.subscription =
-      merge(this.search$, this.paginationServices.notifyChangeSignal.asObservable())
-        .pipe(
-          debounceTime(1500),
-          distinctUntilChanged(),
-          tap(() => {
-            this.paginator?.firstPage();
-            this.loadData();
-          })
-        ).subscribe();
+    runInInjectionContext(
+      this.injector,
+      () => {
+        effect(() => {
+          this.paginator?.firstPage();
+          this.loadData();
+        }, {
+          allowSignalWrites: true
+        });
+      },);
   }
 
   pageEvent($event: PageEvent) {
@@ -137,10 +132,10 @@ export class PaginationGridComponent implements OnInit, OnDestroy {
 
   private calculatePageInfo(): PaginationRequest {
     return {
-      page: this.paginator?.pageIndex + 1 || 1,
-      limit: this.paginator?.pageSize || 10,
-      sort: this.sort?.active || '',
-      order: this.sort?.direction as SortDirection || 'asc',
+      page: this.paginator.pageIndex + 1,
+      limit: this.paginator.pageSize,
+      sort: this.sort.active,
+      order: this.sort.direction as SortDirection,
       search: this.search()
     };
   }

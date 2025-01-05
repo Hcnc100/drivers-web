@@ -1,50 +1,21 @@
 <div class="container-center">
     <form [formGroup]="formLogin" class="form-card" (ngSubmit)="login()">
         <h1>Login</h1>
-        <div class="container-field">
-            <mat-form-field>
-                <mat-label>Email</mat-label>
-                <input matInput [formControl]="formLogin.controls.email" placeholder="example@mail.com" required
-                    maxlength="50" type="email">
-                @if (this.formLogin.controls.email.invalid && (this.formLogin.controls.email.dirty ||
-                this.formLogin.controls.email.touched)){
-                <mat-error>
-                    <ng-container *ngTemplateOutlet="
-                            error;
-                            context: {
-                              control: formLogin.controls.email,
-                              validators: validators.email
-                            }
-                          "></ng-container>
-                        </mat-error>
-                }
-            </mat-form-field>
 
-        </div>
+        <app-simple-input [control]="formLogin.controls.email" [label]="'Email'" [placeholder]="'example@emial.com'"
+            [isRequired]="true" [maxLength]="50" [type]="'email'" [validators]="validators.email"
+            [isEnable]="!isLoading()" class="container-field" [name]="'email'" />
 
-        <div class="container-field">
-            <mat-form-field>
-                <mat-label>Password</mat-label>
-                <input matInput [formControl]="formLogin.controls.password" placeholder="********" required
-                    maxlength="50" matInput [type]="isPasswordVisible() ? 'text' : 'password'">
-                <button mat-icon-button matSuffix (click)="togglePassword($event)" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="isPasswordVisible()">
-                    <mat-icon>{{isPasswordVisible() ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
-                @if (this.formLogin.controls.password.invalid && (this.formLogin.controls.password.dirty ||
-                this.formLogin.controls.password.touched)){
-                <mat-error>
-                    <ng-container *ngTemplateOutlet="
-                            error;
-                            context: {
-                              control: formLogin.controls.password,
-                              validators: validators.password
-                            }
-                          "></ng-container>
-                        </mat-error>
-                }
-            </mat-form-field>
-        </div>
+        <app-simple-input class="container-field" [isEnable]="!isLoading()" [control]="formLogin.controls.password"
+            [label]="'Password'" [placeholder]="'********'" [isRequired]="true" [maxLength]="50"
+            [type]="isPasswordVisible() ? 'text' : 'password'" [validators]="validators.password" [name]="'password'">
+
+            <button mat-icon-button matSuffix (click)="togglePassword($event)" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="isPasswordVisible()" [disabled]="isLoading()">
+                <mat-icon>{{ isPasswordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+        </app-simple-input>
+
 
         @if (isLoading()){
         <mat-spinner diameter="35"></mat-spinner>
@@ -52,17 +23,5 @@
         <button mat-raised-button color="primary" type="submit">Login</button>
         }
 
-
     </form>
 </div>
-
-
-<ng-template #error let-c="control" let-v="validators">
-    @if (c.hasError) {
-    @for (error of v; track $index) {
-    @if (c.errors[error.type]) {
-    {{ error.message }}
-    }
-    }
-    }
-</ng-template>

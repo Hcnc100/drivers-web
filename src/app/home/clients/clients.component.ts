@@ -26,14 +26,7 @@ export class ClientsComponent {
   readonly paginationActions: PaginationActions[] = [];
 
 
-  readonly generalActions = [
-    {
-      name: 'Agregar',
-      icon: 'add',
-      description: 'Agregar cliente',
-      action: () => { }
-    }
-  ];
+  readonly generalActions = [];
 
 
 }

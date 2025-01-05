@@ -5,7 +5,7 @@ import { Signal, signal } from '@angular/core';
 
 export interface IPaginationServices {
 
-    notifyChangeSignal: Subject<number>;
+    notifyChangeSignal: Signal<number>;
 
     getAllPaginated<T>(
         paginationRequest: PaginationRequest

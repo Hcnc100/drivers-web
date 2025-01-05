@@ -1,24 +1,24 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './authentication/login/login.component';
 import { DriversComponent } from './home/drivers/drivers.component';
-import { guardGuard } from './authentication/guard/guard.guard';
-import { DashboardComponent } from './home/dashboard/components/dashboard/dashboard.component';
+import { canActivateGuardHome } from './authentication/guard/home.guard';
 import { VehiclesComponent } from './home/vehicles/vehicles.component';
 import { TripsComponent } from './home/trips/trips.component';
 import { ClientsComponent } from './home/clients/clients.component';
 import { RequestComponent } from './home/request/request.component';
 import { MapsComponent } from './shared/maps/maps.component';
+import { canActivateGuardLogin } from './authentication/guard/login.guard';
 
 export const routes: Routes = [
     {
         path: 'login',
+        canActivate: [canActivateGuardLogin],
         loadComponent: () => import('./authentication/login/login.component').then(m => m.LoginComponent),
 
     },
     {
         path: '',
         loadComponent: () => import('./home/dashboard/components/dashboard/dashboard.component').then(m => m.DashboardComponent),
-        canActivate: [guardGuard],
+        canActivate: [canActivateGuardHome],
         loadChildren: () => homeRoutes,
     },
     {

@@ -19,8 +19,9 @@ import { ToastService } from '../../shared/toast/toast.service';
 })
 export class DriversComponent {
 
-  readonly dialog = inject(MatDialog);
-  readonly toast = inject(ToastService);
+  private readonly dialog = inject(MatDialog);
+  private readonly toast = inject(ToastService);
+  readonly driversService = inject(DriversService);
 
   readonly driverColumns: ColumnName[] = [
     { displayName: 'Id', key: 'id', isSortable: true },
@@ -61,10 +62,6 @@ export class DriversComponent {
     }
   ];
 
-  constructor(
-    public driversService: DriversService,
-  ) { }
-
 
   actionDriver(action: DialogAction, driver?: Driver) {
     const response = this.dialog.open(DriversFormDialogComponent, {
@@ -103,7 +100,6 @@ export class DriversComponent {
     this.driversService.createDriver(createDriverDto).subscribe({
       next: () => this.toast.showSuccess('Conductor creado', 'Se ha creado un nuevo conductor'),
       error: (error) => {
-        console.log('error createDriver', error)
         this.toast.showError('Error', 'No se ha podido crear el conductor')
       }
     })
@@ -113,7 +109,6 @@ export class DriversComponent {
     this.driversService.updateDriver(id, updateDriver).subscribe({
       next: () => this.toast.showSuccess('Conductor actualizado', 'Se ha actualizado el conductor'),
       error: (error) => {
-        console.log('error updateDriver', error)
         this.toast.showError('Error', 'No se ha podido actualizar el conductor')
       }
     })
@@ -123,7 +118,6 @@ export class DriversComponent {
     this.driversService.deleteDriver(id).subscribe({
       next: () => this.toast.showSuccess('Conductor eliminado', 'Se ha eliminado el conductor'),
       error: (error) => {
-        console.log('error deleteDriver', error)
         this.toast.showError('Error', 'No se ha podido eliminar el conductor')
       }
     })
