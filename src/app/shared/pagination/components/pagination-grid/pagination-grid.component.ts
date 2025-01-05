@@ -132,10 +132,10 @@ export class PaginationGridComponent implements OnInit {
 
   private calculatePageInfo(): PaginationRequest {
     return {
-      page: this.paginator?.pageIndex + 1 || 1,
-      limit: this.paginator?.pageSize || 10,
-      sort: this.sort?.active || '',
-      order: this.sort?.direction as SortDirection || 'asc',
+      page: this.paginator.pageIndex + 1,
+      limit: this.paginator.pageSize,
+      sort: this.sort.active,
+      order: this.sort.direction as SortDirection,
       search: this.search()
     };
   }
