@@ -21,6 +21,12 @@ module.exports = function(config) {
     },
     reporters: ['progress', 'coverage-istanbul'],
     browsers: ['ChromeHeadless'],
+    customLaunchers: {
+      ChromeHeadless: {
+        base: 'Chrome',
+        flags: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
+      }
+    },
     singleRun: true
   });
 };
