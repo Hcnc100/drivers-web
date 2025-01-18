@@ -22,16 +22,15 @@ jobs:
       - name: Ensure Angular DevKit is installed
         run: npm install --save-dev @angular-devkit/build-angular
 
-      # Paso simplificado para ejecutar pruebas sin dependencias adicionales
+      # Instalar dependencias de Chrome y Chromium para headless mode
       - name: Install Chrome dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libx11-xcb1 libxcomposite1 libxrandr2 libxi6 libatk1.0-0 libgtk-3-0 libnss3 libxss1
+          sudo apt-get install -y chromium-browser
 
       - name: Run tests with coverage
-        run: npm run test:coverage
-        env:
-          CHROME_BIN: google-chrome-stable
+        run: npm run test:coverage -- --browsers=ChromiumHeadless --watch=false
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
