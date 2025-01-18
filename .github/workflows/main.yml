@@ -11,81 +11,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Set up Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      # Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Run tests with Karma (and coverage)
-      - name: Run tests
-        run: npm run test -- --coverage --watch=false
-        env:
-          CI: true
+      - name: Run tests with coverage
+        run: npm run test:coverage
 
-      # Read coverage thresholds from karma.conf.js
-      - name: Extract coverage thresholds from karma.conf.js
-        run: |
-          # Use Node.js to load the karma config and extract the coverage thresholds
-          THRESHOLDS=$(node -e "
-            const karmaConfig = require('./karma.conf.js');
-            const thresholds = karmaConfig.coverageIstanbulReporter.thresholds.global;
-            console.log(JSON.stringify(thresholds));
-          ")
-          echo "Coverage thresholds: $THRESHOLDS"
-          echo "THRESHOLDS=$THRESHOLDS" >> $GITHUB_ENV
-
-      # Check if coverage meets the threshold (using Karma's lcov report)
-      - name: Check coverage
-        run: |
-          # Extrae el porcentaje de cobertura desde el archivo lcov-report generado por Karma
-          COVERAGE=$(grep -Po '(?<=All files\s*\|\s*)\d+(?=%)' coverage/lcov-report/index.html)
-          echo "Coverage: $COVERAGE%"
-
-          # Parsear los umbrales desde el paso anterior
-          STATEMENTS_THRESHOLD=$(echo $THRESHOLDS | jq .statements)
-          LINES_THRESHOLD=$(echo $THRESHOLDS | jq .lines)
-          BRANCHES_THRESHOLD=$(echo $THRESHOLDS | jq .branches)
-          FUNCTIONS_THRESHOLD=$(echo $THRESHOLDS | jq .functions)
-
-          # Asegúrate de que la cobertura sea mayor que el umbral configurado
-          if [ $(echo "$COVERAGE < $STATEMENTS_THRESHOLD" | bc) -eq 1 ]; then
-            echo "Coverage is below the required threshold for statements ($STATEMENTS_THRESHOLD)! Current: $COVERAGE%"
-            exit 1
-          fi
-          if [ $(echo "$COVERAGE < $LINES_THRESHOLD" | bc) -eq 1 ]; then
-            echo "Coverage is below the required threshold for lines ($LINES_THRESHOLD)! Current: $COVERAGE%"
-            exit 1
-          fi
-          if [ $(echo "$COVERAGE < $BRANCHES_THRESHOLD" | bc) -eq 1 ]; then
-            echo "Coverage is below the required threshold for branches ($BRANCHES_THRESHOLD)! Current: $COVERAGE%"
-            exit 1
-          fi
-          if [ $(echo "$COVERAGE < $FUNCTIONS_THRESHOLD" | bc) -eq 1 ]; then
-            echo "Coverage is below the required threshold for functions ($FUNCTIONS_THRESHOLD)! Current: $COVERAGE%"
-            exit 1
-          fi
-
-      # Login to Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Determine Docker tag based on branch
       - name: Determine Docker tag
         id: tag
         run: |
@@ -100,7 +43,6 @@ jobs:
             exit 1
           fi
 
-      # Build and push Docker image to Docker Hub
       - name: Build and push Docker image to Docker Hub
         uses: docker/build-push-action@v2
         with:
@@ -109,25 +51,21 @@ jobs:
           file: ./Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/drivers-front:${{ env.tag }}
 
-      # Set up Google Cloud authentication
       - name: Set up Google Cloud authentication
         uses: google-github-actions/auth@v0
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      # Configure Google Cloud SDK
       - name: Configure Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           install_components: "beta"
 
-      # Build Docker image for Cloud Run
       - name: Build Docker image for Cloud Run
         run: |
           gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/drivers-front:${{ env.tag }}
 
-      # Deploy to Cloud Run
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy drivers-front \
