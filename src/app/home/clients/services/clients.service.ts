@@ -3,11 +3,11 @@ import { IPaginationServices } from '../../../shared/pagination/interfaces/IPagi
 import { Subject, Observable } from 'rxjs';
 import { PaginationRequest } from '../../../shared/pagination/model/pagination.request';
 import { PaginatedResult } from '../../../shared/pagination/model/pagination.result';
-import { environment } from '../../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { generatePaginationQuery } from '../../../utils/generate-pagination-query';
 import { Client } from '../model/client';
 import { PaginationServices } from '../../../shared/pagination/interfaces/PaginationServices';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

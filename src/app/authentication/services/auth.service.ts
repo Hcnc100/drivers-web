@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
 import { LoginDTO } from '../model/LoginDTO';
 import { tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { LoginResponse } from '../model/LoginResponse';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
