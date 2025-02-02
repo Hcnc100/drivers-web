@@ -85,3 +85,11 @@ jobs:
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated
+      - name: Delete old Docker images from Google Container Registry
+        run: |
+          # Elimina imágenes antiguas, manteniendo solo la más reciente
+          gcloud container images list-tags gcr.io/${{ secrets.GCP_PROJECT_ID }}/drivers-front \
+          --sort-by="~TIMESTAMP" --limit=1000 --format="get(digest)" | tail -n +2 | while read digest; do
+            # Elimina todas las imágenes excepto la más reciente
+            gcloud container images delete gcr.io/${{ secrets.GCP_PROJECT_ID }}/drivers-front@$digest --quiet --force-delete-tags
+          done
