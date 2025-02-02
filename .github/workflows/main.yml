@@ -74,10 +74,14 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           install_components: "beta"
 
+      - name: Build Docker image for Cloud Run
+        run: |
+          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/drivers-front:${{ env.tag }}
+
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy drivers-front \
-            --image ${{ secrets.DOCKERHUB_USERNAME }}/drivers-front:${{ env.tag }} \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/drivers-front:${{ env.tag }} \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated
