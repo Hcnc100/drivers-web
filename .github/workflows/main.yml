@@ -55,12 +55,27 @@ jobs:
             exit 1
           fi
 
+      - name: Determine Angular build configuration
+        id: build_config
+        run: |
+          if [ "${GITHUB_REF##*/}" == "main" ]; then
+            echo "config=production" >> $GITHUB_ENV
+          elif [ "${GITHUB_REF##*/}" == "develop" ]; then
+            echo "config=development" >> $GITHUB_ENV
+          elif [ "${GITHUB_REF##*/}" == "qa" ]; then
+            echo "config=qa" >> $GITHUB_ENV
+          else
+            echo "Error: branch name not recognized"
+            exit 1
+          fi
+
       - name: Build and push Docker image to Docker Hub
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           file: ./Dockerfile
+          build-args: CONFIGURATION=${{ env.config }}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/drivers-front:${{ env.tag }}
 
       - name: Set up Google Cloud authentication

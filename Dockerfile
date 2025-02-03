@@ -13,8 +13,11 @@ RUN npm install
 # Copia el resto de los archivos del proyecto
 COPY . .
 
-# Construye la aplicación Angular
-RUN npm run build
+# Definir un argumento para seleccionar la configuración de compilación
+ARG CONFIGURATION=production
+
+# Construye la aplicación Angular con la configuración recibida
+RUN npm run build -- --configuration=$CONFIGURATION
 
 # Usa una imagen base de Nginx para servir la aplicación
 FROM nginx:alpine
