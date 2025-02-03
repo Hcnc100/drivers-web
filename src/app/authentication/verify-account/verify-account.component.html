@@ -1,0 +1,16 @@
+<div class="container">
+    @switch (verifyAccountState()) {
+        @case(VerifyAccountStateEnum.VERIFIED){
+            <h4>¡Cuenta verificada!</h4>
+            <p>Ya puedes iniciar sesión</p>
+        }
+        @case(VerifyAccountStateEnum.NOT_VERIFIED){
+            <h4>¡Cuenta no verificada!</h4>
+            <p>Revise su correo electrónico para verificar su cuenta</p>
+        }
+        @case(VerifyAccountStateEnum.ERROR){
+            <h4>¡Error!</h4>
+            <p>Hubo un error al verificar su cuenta, por favor intente nuevamente</p>
+        }   
+    }
+</div>

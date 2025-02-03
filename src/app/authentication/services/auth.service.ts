@@ -42,4 +42,10 @@ export class AuthService {
       })
     );
   }
+
+  verifyAccount(token: string) {
+    const queryParams = new URLSearchParams();
+    queryParams.set('token', token);
+    return this.http.get(`${this.controller}/verify?${queryParams.toString()}`);
+  }
 }
