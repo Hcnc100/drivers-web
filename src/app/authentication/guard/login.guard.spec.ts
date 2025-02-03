@@ -58,7 +58,7 @@ describe('canActivateGuardLogin', () => {
 
 
 
-    fit('should return false and navigate to home when token exists', async () => {
+    it('should return false and navigate to home when token exists', async () => {
         const mockRoute = {} as ActivatedRouteSnapshot;
         const mockState = {} as RouterStateSnapshot;
 
@@ -69,7 +69,7 @@ describe('canActivateGuardLogin', () => {
         expect(result).toBeFalse();
     });
 
-    fit('should return true if the refresh token fails', async () => {
+    it('should return true if the refresh token fails', async () => {
         const mockRoute = {} as ActivatedRouteSnapshot;
         const mockState = {} as RouterStateSnapshot;
 
@@ -80,7 +80,7 @@ describe('canActivateGuardLogin', () => {
         expect(result).toBeTrue();
     });
 
-    fit('should return true if the refresh token return empty', async () => {
+    it('should return true if the refresh token return empty', async () => {
         const mockRoute = {} as ActivatedRouteSnapshot;
         const mockState = {} as RouterStateSnapshot;
 
@@ -96,7 +96,7 @@ describe('canActivateGuardLogin', () => {
         expect(result).toBeTrue();
     });
 
-    fit('should return false and navigate to home when token is refreshed', async () => {
+    it('should return false and navigate to home when token is refreshed', async () => {
         const mockRoute = {} as ActivatedRouteSnapshot;
         const mockState = {} as RouterStateSnapshot;
 
