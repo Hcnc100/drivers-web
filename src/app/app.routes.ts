@@ -22,6 +22,10 @@ export const routes: Routes = [
         loadChildren: () => homeRoutes,
     },
     {
+        path: 'verify-account',
+        loadComponent: () => import('./authentication/verify-account/verify-account.component').then(m => m.VerifyAccountComponent),
+    },
+    {
         path: '**',
         redirectTo: '',
     }

@@ -55,22 +55,20 @@ const refreshTokenResponse: LoginResponse = {
 describe('AuthService', () => {
   let service: AuthService;
   let httpClient: HttpTestingController;
-  let tokenServiceSpy: jasmine.SpyObj<TokenService>;
+  let tokenServiceSpy: TokenService;
 
   beforeEach(() => {
-
-    tokenServiceSpy = jasmine.createSpyObj<TokenService>('TokenService', ['tokenData', 'token', 'refreshToken']);
 
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: TokenService, useValue: tokenServiceSpy }
       ]
     });
     service = TestBed.inject(AuthService);
     httpClient = TestBed.inject(HttpTestingController);
 
+    tokenServiceSpy = TestBed.inject(TokenService);
   });
 
   afterEach(() => {
@@ -87,10 +85,10 @@ describe('AuthService', () => {
       next: (res) => {
         expect(res).toEqual(mockResponse);
 
-        expect(tokenServiceSpy.tokenData).toEqual({
-          token: refreshTokenResponse.token,
-          refreshToken: refreshTokenResponse.refreshToken
-        });
+        expect(tokenServiceSpy.getAccessToken()).toEqual(
+          mockResponse.token
+        );
+
         done();
       },
       error: (error) => {
@@ -110,10 +108,9 @@ describe('AuthService', () => {
       next: (res) => {
         expect(res).toEqual(refreshTokenResponse);
 
-        expect(tokenServiceSpy.tokenData).toEqual({
-          token: refreshTokenResponse.token,
-          refreshToken: refreshTokenResponse.refreshToken
-        });
+        expect(tokenServiceSpy.getAccessToken()).toEqual(
+          refreshTokenResponse.token
+        );
 
         done();
       },
@@ -126,6 +123,26 @@ describe('AuthService', () => {
     const req = httpClient.expectOne(service.refreshTokenPath);
     expect(req.request.method).toBe('POST');
     req.flush(refreshTokenResponse);
+  });
+
+
+  it('should call verify account', (done) => {
+
+    service.verifyAccount('token').subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResponse);
+
+        done();
+      },
+      error: (error) => {
+        fail('Expected no errors, but got ' + error);
+        done();
+      }
+    });
+
+    const req = httpClient.expectOne(`${service.verifyAccountPath}?token=token`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
   });
 
 });
