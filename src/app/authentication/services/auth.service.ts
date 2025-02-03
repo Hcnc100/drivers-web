@@ -16,6 +16,7 @@ export class AuthService {
 
   readonly loginPath = `${this.controller}/login`;
   readonly refreshTokenPath = `${this.controller}/refresh`;
+  readonly verifyAccountPath = `${this.controller}/verify`;
 
 
   login(LoginDTO: LoginDTO) {
@@ -37,6 +38,6 @@ export class AuthService {
   verifyAccount(token: string) {
     const queryParams = new URLSearchParams();
     queryParams.set('token', token);
-    return this.http.get(`${this.controller}/verify?${queryParams.toString()}`);
+    return this.http.get(`${this.verifyAccountPath}?${queryParams.toString()}`);
   }
 }

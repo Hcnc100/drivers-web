@@ -125,4 +125,24 @@ describe('AuthService', () => {
     req.flush(refreshTokenResponse);
   });
 
+
+  it('should call verify account', (done) => {
+
+    service.verifyAccount('token').subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResponse);
+
+        done();
+      },
+      error: (error) => {
+        fail('Expected no errors, but got ' + error);
+        done();
+      }
+    });
+
+    const req = httpClient.expectOne(`${service.verifyAccountPath}?token=token`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
+  });
+
 });

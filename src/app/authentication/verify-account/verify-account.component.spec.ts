@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VerifyAccountComponent } from './verify-account.component';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { VerifyAccountState } from '../model/VerifyAccount.state';
 
 describe('VerifyAccountComponent', () => {
   let component: VerifyAccountComponent;
@@ -34,5 +35,24 @@ describe('VerifyAccountComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should verify account', () => {
+    authServiceSpy.verifyAccount.and.returnValue(of({}));
+
+    component.ngOnInit();
+
+    expect(authServiceSpy.verifyAccount).toHaveBeenCalledWith('mock-token');
+    expect(component.verifyAccountState()).toBe(VerifyAccountState.VERIFIED);
+  });
+
+  it('should handle error', () => {
+
+    authServiceSpy.verifyAccount.and.returnValue(throwError(() => new Error('Error')));
+
+    component.ngOnInit();
+
+    expect(authServiceSpy.verifyAccount).toHaveBeenCalledWith('mock-token');
+    expect(component.verifyAccountState()).toBe(VerifyAccountState.NOT_VERIFIED);
   });
 });

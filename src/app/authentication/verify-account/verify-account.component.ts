@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { VerifyAccountState } from '../model/VerifyAccount.state';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-verify-account',
@@ -13,7 +14,8 @@ import { VerifyAccountState } from '../model/VerifyAccount.state';
   templateUrl: './verify-account.component.html',
   styleUrl: './verify-account.component.css'
 })
-export class VerifyAccountComponent implements OnInit {
+export class VerifyAccountComponent implements OnInit, OnDestroy {
+
 
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private readonly authService: AuthService = inject(AuthService);
@@ -21,27 +23,32 @@ export class VerifyAccountComponent implements OnInit {
   readonly verifyAccountState = signal<VerifyAccountState>(VerifyAccountState.LOADING);
   readonly VerifyAccountStateEnum = VerifyAccountState;
 
+  private subscription?: Subscription;
+
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      const token = params['token'];
-      if (token) {
-        this.verifyAccount(token);
-      }
-    });
+    this.subscription =
+      this.activatedRoute.queryParams.subscribe(params => {
+        const token = params['token'];
+        if (token) {
+          this.verifyAccount(token);
+        }
+      });
   }
 
 
   private verifyAccount(token: string): void {
     this.authService.verifyAccount(token).subscribe({
       next: (res) => {
-        console.log(res);
         this.verifyAccountState.set(VerifyAccountState.VERIFIED);
       },
       error: (err) => {
-        console.error(err);
         this.verifyAccountState.set(VerifyAccountState.NOT_VERIFIED);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }
