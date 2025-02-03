@@ -34,7 +34,7 @@ describe('canActivateGuardHome', () => {
 
   let routerServiceMock: jasmine.SpyObj<Router>;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
-  let tokenServiceSpy: jasmine.SpyObj<TokenService>;
+  let tokenServiceSpy: TokenService;
 
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => canActivateGuardHome(...guardParameters));
@@ -42,21 +42,16 @@ describe('canActivateGuardHome', () => {
   beforeEach(() => {
     routerServiceMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
     authServiceSpy = jasmine.createSpyObj<AuthService>('AuthService', ['refreshToken']);
-    tokenServiceSpy = jasmine.createSpyObj<TokenService>('TokenService', ['getAccessToken']);
 
     TestBed.configureTestingModule({
       providers: [
         TokenService,
-        { provide: TokenService, useValue: tokenServiceSpy },
         { provide: Router, useValue: routerServiceMock },
         { provide: AuthService, useValue: authServiceSpy },
       ],
     });
 
-
-    tokenServiceSpy.getAccessToken.and.returnValue('');
-
-    authServiceSpy.refreshToken.and.returnValue(of(loginResponse));
+    tokenServiceSpy = TestBed.inject(TokenService);
   });
 
 
@@ -65,8 +60,8 @@ describe('canActivateGuardHome', () => {
     const mockRoute = {} as any;
     const mockState = {} as any;
 
-    tokenServiceSpy.setAccessToken('mockToken');  // Set token in memory
 
+    tokenServiceSpy.setAccessToken('mockToken');
     const result = await executeGuard(mockRoute, mockState);
 
     expect(result).toBeTrue();
@@ -77,7 +72,10 @@ describe('canActivateGuardHome', () => {
     const mockRoute = {} as any;
     const mockState = {} as any;
 
-    authServiceSpy.refreshToken.and.returnValue(of(loginResponse));
+    authServiceSpy.refreshToken.and.callFake(() => {
+      tokenServiceSpy.setAccessToken('newToken');
+      return of(loginResponse);
+    });
 
     const result = await executeGuard(mockRoute, mockState);
 
@@ -107,6 +105,6 @@ describe('canActivateGuardHome', () => {
     const result = await executeGuard(mockRoute, mockState);
 
     expect(result).toBeTrue();
-    expect(routerServiceMock.navigate).not.toHaveBeenCalled();  // No navigation should occur
+    expect(routerServiceMock.navigate).not.toHaveBeenCalled();
   });
 });

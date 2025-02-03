@@ -55,22 +55,20 @@ const refreshTokenResponse: LoginResponse = {
 describe('AuthService', () => {
   let service: AuthService;
   let httpClient: HttpTestingController;
-  let tokenServiceSpy: jasmine.SpyObj<TokenService>;
+  let tokenServiceSpy: TokenService;
 
   beforeEach(() => {
-
-    tokenServiceSpy = jasmine.createSpyObj<TokenService>('TokenService', ['getAccessToken', 'setAccessToken']);
 
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: TokenService, useValue: tokenServiceSpy }
       ]
     });
     service = TestBed.inject(AuthService);
     httpClient = TestBed.inject(HttpTestingController);
 
+    tokenServiceSpy = TestBed.inject(TokenService);
   });
 
   afterEach(() => {

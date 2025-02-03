@@ -25,8 +25,6 @@ export const canActivateGuardLogin: CanActivateFn = async (route, state) => {
         // Después de la renovación, obtener el nuevo access token
         const newToken = tokenServices.getAccessToken();
 
-        console.log('newToken', newToken);
-
         // Si el refresh fue exitoso y se obtuvo un nuevo token, redirige al home
         if (newToken) {
             await routerService.navigate(['/home']);

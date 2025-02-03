@@ -30,8 +30,6 @@ export const canActivateGuardHome: CanActivateFn = async (route, state) => {
       return true;
     }
   } catch (error) {
-    // Si hubo un error en la renovación, redirigir al login
-    console.error('Error al renovar el token', error);
   }
 
   // Si no se puede renovar el token o no se obtuvo, redirige al login

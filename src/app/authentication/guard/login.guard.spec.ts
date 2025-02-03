@@ -52,11 +52,6 @@ describe('canActivateGuardLogin', () => {
         tokenServiceSpy = TestBed.inject(TokenService);
     });
 
-    afterEach(() => {
-        localStorage.clear();
-    });
-
-
 
     it('should return false and navigate to home when token exists', async () => {
         const mockRoute = {} as ActivatedRouteSnapshot;
