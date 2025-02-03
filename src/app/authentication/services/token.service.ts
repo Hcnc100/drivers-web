@@ -7,31 +7,17 @@ import { TokenData } from '../model/TokenData';
 })
 export class TokenService {
 
+  private accessToken?: string = undefined;
+
   constructor() { }
 
-  get token(): string {
-    return localStorage.getItem(constants.KEY_TOKEN) ?? '';
+
+  setAccessToken(token: string): void {
+    this.accessToken = token;
   }
 
-  get refreshToken(): string {
-    return localStorage.getItem(constants.KEY_REFRESH_TOKEN) ?? '';
-  }
-
-  get tokenData(): TokenData {
-    return {
-      token: this.token,
-      refreshToken: this.refreshToken
-    };
-  }
-
-  set tokenData(tokenData: TokenData) {
-    localStorage.setItem(constants.KEY_TOKEN, tokenData.token);
-    localStorage.setItem(constants.KEY_REFRESH_TOKEN, tokenData.refreshToken);
-  }
-
-  deleteToken() {
-    localStorage.removeItem(constants.KEY_TOKEN);
-    localStorage.removeItem(constants.KEY_REFRESH_TOKEN);
+  getAccessToken(): string {
+    return this.accessToken ?? '';
   }
 
 }

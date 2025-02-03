@@ -9,21 +9,20 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
     const tokenServices = inject(TokenService);
     const authService = inject(AuthService);
     const router = inject(Router);
-    const token = tokenServices.token;
+    const token = tokenServices.getAccessToken();
 
     req = signingRequestInterceptor(req, token);
 
     return next(req).pipe(
         catchError((error) => {
-            const refreshToken = tokenServices.refreshToken;
-            if (error.status === 401 && token && refreshToken && (!req.url.includes('refresh') || !req.url.includes('login'))) {
+            if (error.status === 401 && token && (!req.url.includes('refresh') || !req.url.includes('login'))) {
                 return authService.refreshToken().pipe(
                     switchMap(() => {
-                        req = signingRequestInterceptor(req, tokenServices.token);
+                        req = signingRequestInterceptor(req, tokenServices.getAccessToken());
                         return next(req);
                     }),
                     catchError((refreshError) => {
-                        tokenServices.deleteToken();
+                        tokenServices.setAccessToken('');
                         router.navigate(['/login']);
                         return throwError(() => refreshError);
                     })
@@ -39,6 +38,7 @@ const signingRequestInterceptor = (req: HttpRequest<any>, accessToken: string) =
     return req.clone({
         setHeaders: {
             Authorization: `Bearer ${accessToken}`
-        }
+        },
+        withCredentials: true
     });
 }

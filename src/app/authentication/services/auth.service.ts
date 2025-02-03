@@ -21,24 +21,15 @@ export class AuthService {
   login(LoginDTO: LoginDTO) {
     return this.http.post<LoginResponse>(this.loginPath, LoginDTO).pipe(
       tap((response: LoginResponse) => {
-        const tokenData = {
-          token: response.token,
-          refreshToken: response.refreshToken
-        };
-        this.tokenService.tokenData = tokenData;
+        this.tokenService.setAccessToken(response.token);
       })
     );
   }
 
   refreshToken() {
-    const tokenData = this.tokenService.tokenData;
-    return this.http.post<LoginResponse>(this.refreshTokenPath, tokenData).pipe(
+    return this.http.post<LoginResponse>(this.refreshTokenPath, null).pipe(
       tap((response: LoginResponse) => {
-        const tokenData = {
-          token: response.token,
-          refreshToken: response.refreshToken
-        };
-        this.tokenService.tokenData = tokenData;
+        this.tokenService.setAccessToken(response.token);
       })
     );
   }

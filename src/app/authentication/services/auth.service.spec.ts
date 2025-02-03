@@ -59,7 +59,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
 
-    tokenServiceSpy = jasmine.createSpyObj<TokenService>('TokenService', ['tokenData', 'token', 'refreshToken']);
+    tokenServiceSpy = jasmine.createSpyObj<TokenService>('TokenService', ['getAccessToken', 'setAccessToken']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -87,10 +87,10 @@ describe('AuthService', () => {
       next: (res) => {
         expect(res).toEqual(mockResponse);
 
-        expect(tokenServiceSpy.tokenData).toEqual({
-          token: refreshTokenResponse.token,
-          refreshToken: refreshTokenResponse.refreshToken
-        });
+        expect(tokenServiceSpy.getAccessToken()).toEqual(
+          mockResponse.token
+        );
+
         done();
       },
       error: (error) => {
@@ -110,10 +110,9 @@ describe('AuthService', () => {
       next: (res) => {
         expect(res).toEqual(refreshTokenResponse);
 
-        expect(tokenServiceSpy.tokenData).toEqual({
-          token: refreshTokenResponse.token,
-          refreshToken: refreshTokenResponse.refreshToken
-        });
+        expect(tokenServiceSpy.getAccessToken()).toEqual(
+          refreshTokenResponse.token
+        );
 
         done();
       },

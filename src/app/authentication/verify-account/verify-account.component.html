@@ -11,6 +11,10 @@
         @case(VerifyAccountStateEnum.ERROR){
             <h4>¡Error!</h4>
             <p>Hubo un error al verificar su cuenta, por favor intente nuevamente</p>
+        }
+        @case (VerifyAccountStateEnum.LOADING) {
+            <h4>Verificando cuenta...</h4>
+            <mat-spinner></mat-spinner>
         }   
     }
 </div>
