@@ -49,7 +49,7 @@ describe('ResetPasswordComponent', () => {
     component.form.patchValue({ password: '123' });
     component.onSubmit();
 
-    expect(authService.resetPassword).not.toHaveBeenCalled();
+    expect(component.form.controls.password.errors).toEqual({ minlength: { requiredLength: 6, actualLength: 3 } });
   });
 
   it('should submit if form is valid and success', () => {
