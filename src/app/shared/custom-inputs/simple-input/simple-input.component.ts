@@ -32,7 +32,7 @@ export class SimpleInputComponent {
   readonly type = input<string>('text');
   readonly label = input<string>('');
   readonly isRequired = input<boolean>(false);
-  readonly maxLength = input<number>(0);
+  readonly maxLength = input<number | null>(null);
   readonly validators = input<ErrorForm[]>();
   readonly isEnable = input<boolean>(true);
   readonly options = input<AutoCompleteValue[]>([]);

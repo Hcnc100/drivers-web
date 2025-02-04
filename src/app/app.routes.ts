@@ -26,6 +26,10 @@ export const routes: Routes = [
         loadComponent: () => import('./authentication/verify-account/verify-account.component').then(m => m.VerifyAccountComponent),
     },
     {
+        path: 'reset-password',
+        loadComponent: () => import('./authentication/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+    },
+    {
         path: '**',
         redirectTo: '',
     }
