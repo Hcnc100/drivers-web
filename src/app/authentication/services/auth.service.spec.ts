@@ -145,4 +145,22 @@ describe('AuthService', () => {
     req.flush(mockResponse);
   });
 
+  it('should call reset password', (done) => {
+
+    service.resetPassword({ token: 'token', password: 'password' }).subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResponse)
+        done();
+      },
+      error: (error) => {
+        fail('Expected no errors, but got ' + error);
+        done();
+      }
+    });
+
+    const req = httpClient.expectOne(service.resetPasswordPath);
+    expect(req.request.method).toBe('POST');
+    req.flush(mockResponse);
+  });
+
 });

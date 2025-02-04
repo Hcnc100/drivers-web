@@ -5,6 +5,7 @@ import { tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { LoginResponse } from '../model/LoginResponse';
 import { environment } from '../../../environments/environment';
+import { ResetPasswordDTO } from '../model/ResetPasswordDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class AuthService {
   readonly loginPath = `${this.controller}/login`;
   readonly refreshTokenPath = `${this.controller}/refresh`;
   readonly verifyAccountPath = `${this.controller}/verify`;
+  readonly resetPasswordPath = `${this.controller}/reset-password`;
 
 
   login(LoginDTO: LoginDTO) {
@@ -39,5 +41,11 @@ export class AuthService {
     const queryParams = new URLSearchParams();
     queryParams.set('token', token);
     return this.http.get(`${this.verifyAccountPath}?${queryParams.toString()}`);
+  }
+
+  resetPassword(
+    resetPasswordDTO: ResetPasswordDTO
+  ) {
+    return this.http.post(`${this.resetPasswordPath}`, resetPasswordDTO);
   }
 }

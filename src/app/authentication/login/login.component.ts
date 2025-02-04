@@ -27,7 +27,8 @@ import { SimpleInputComponent } from '../../shared/custom-inputs/simple-input/si
     MatIconModule,
     MatProgressSpinnerModule,
     CommonModule,
-    SimpleInputComponent
+    SimpleInputComponent,
+    CommonModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
