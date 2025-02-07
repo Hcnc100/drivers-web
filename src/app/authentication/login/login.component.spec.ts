@@ -137,4 +137,9 @@ describe('LoginComponent', () => {
     expect(component.isPasswordVisible()).toBe(!currentValue);
   });
 
+  it('should navigate to forgot password', () => {
+    component.forgotPassword();
+    expect(router.navigate).toHaveBeenCalledWith(['/send-reset-password']);
+  });
+
 });

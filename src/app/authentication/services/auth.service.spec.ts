@@ -5,6 +5,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { LoginDTO } from '../model/LoginDTO';
 import { LoginResponse } from '../model/LoginResponse';
 import { TokenService } from './token.service';
+import { SendForgotPasswordResponse } from '../model/SendForgotPasswordResponse';
 
 const loginDTO: LoginDTO = {
   email: 'example@mail.com',
@@ -51,6 +52,10 @@ const refreshTokenResponse: LoginResponse = {
     }
   }
 };
+
+const sendForgotPassordResponse: SendForgotPasswordResponse = {
+  message: 'message'
+}
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -161,6 +166,24 @@ describe('AuthService', () => {
     const req = httpClient.expectOne(service.resetPasswordPath);
     expect(req.request.method).toBe('POST');
     req.flush(mockResponse);
+  });
+
+  it('should call send reset password', (done) => {
+
+    service.sendResetPassword({ email: 'email' }).subscribe({
+      next: (res) => {
+        expect(res).toEqual(sendForgotPassordResponse)
+        done();
+      },
+      error: (error) => {
+        fail('Expected no errors, but got ' + error);
+        done();
+      }
+    });
+
+    const req = httpClient.expectOne(service.sendResetPasswordPath);
+    expect(req.request.method).toBe('POST');
+    req.flush(sendForgotPassordResponse);
   });
 
 });
