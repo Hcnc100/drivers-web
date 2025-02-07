@@ -34,6 +34,7 @@ import { SimpleInputComponent } from '../../shared/custom-inputs/simple-input/si
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
   private readonly authService: AuthService = inject(AuthService);
   private readonly dialogService: DialogService = inject(DialogService);
   private readonly router: Router = inject(Router);
@@ -115,6 +116,10 @@ export class LoginComponent {
     event.preventDefault();
     event.stopPropagation();
     this._isPasswordVisible.update(value => !value);
+  }
+
+  forgotPassword() {
+    this.router.navigate(['/send-reset-password']);
   }
 
 

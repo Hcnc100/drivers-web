@@ -6,6 +6,8 @@ import { TokenService } from './token.service';
 import { LoginResponse } from '../model/LoginResponse';
 import { environment } from '../../../environments/environment';
 import { ResetPasswordDTO } from '../model/ResetPasswordDTO';
+import { SendForgotPassordDto } from '../model/SendForgotPassordDto';
+import { SendForgotPasswordResponse } from '../model/SendForgotPasswordResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,7 @@ export class AuthService {
   readonly refreshTokenPath = `${this.controller}/refresh`;
   readonly verifyAccountPath = `${this.controller}/verify`;
   readonly resetPasswordPath = `${this.controller}/reset-password`;
+  readonly sendResetPasswordPath = `${this.controller}/forgot-password`;
 
 
   login(LoginDTO: LoginDTO) {
@@ -47,5 +50,9 @@ export class AuthService {
     resetPasswordDTO: ResetPasswordDTO
   ) {
     return this.http.post(`${this.resetPasswordPath}`, resetPasswordDTO);
+  }
+
+  sendResetPassword(sendForgotPassordDto: SendForgotPassordDto) {
+    return this.http.post<SendForgotPasswordResponse>(`${this.sendResetPasswordPath}`, sendForgotPassordDto);
   }
 }
